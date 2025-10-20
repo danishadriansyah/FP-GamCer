@@ -191,7 +191,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   xpOrbPrefab: {fileID: 8357088097764932015, guid: 84504763953c4d4479b1542c6fee50b8, type: 3}
-  maxHealth: 2
+  maxHealth: 9
 --- !u!95 &-6247807684624867315
 Animator:
   serializedVersion: 7

@@ -47,6 +47,8 @@ public class EnemyAI : MonoBehaviour
             // Jika enemy tidak sedang menyerang maka bergerak, jika menyerang maka diam di tempat
             else if (!animator.GetBool("IsAttacking"))
             {
+                // Set parameter animator IsRunning menjadi true ketika objek bergerak
+                animator.SetBool("IsRunning", true);
                 rb.linearVelocity = direction * speed;
             }
             else
@@ -65,9 +67,6 @@ public class EnemyAI : MonoBehaviour
             {
                 animator.SetBool("IsAttacking", false);
             }
-
-            // Set parameter animator IsRunning menjadi true ketika objek bergerak
-            animator.SetBool("IsRunning", true);
         }
     }
 }

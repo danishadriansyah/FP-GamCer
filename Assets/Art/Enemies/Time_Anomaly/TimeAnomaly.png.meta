@@ -1054,28 +1054,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: NightBorne_36
-      rect:
-        serializedVersion: 2
-        x: 1172
-        y: 51
-        width: 8
-        height: 9
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 6aa8f9582f592a670800000000000000
-      internalID: 8548559911559072422
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: NightBorne_37
       rect:
         serializedVersion: 2
@@ -1093,28 +1071,6 @@ TextureImporter:
       bones: []
       spriteID: 3356f7d40ef459380800000000000000
       internalID: -8965171658419641037
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: NightBorne_38
-      rect:
-        serializedVersion: 2
-        x: 1250
-        y: 52
-        width: 7
-        height: 7
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: a894443e7e3d5d980800000000000000
-      internalID: -8514666527570245238
       vertices: []
       indices: 
       edges: []
@@ -1516,28 +1472,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: NightBorne_57
-      rect:
-        serializedVersion: 2
-        x: 1175
-        y: 1
-        width: 9
-        height: 9
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 7fa2855c6f7745ab0800000000000000
-      internalID: -5020255782854710537
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: TimeAnomaly_0
       rect:
         serializedVersion: 2
@@ -1546,7 +1480,7 @@ TextureImporter:
         width: 18
         height: 19
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
