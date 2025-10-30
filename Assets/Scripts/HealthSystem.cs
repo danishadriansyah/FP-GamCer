@@ -5,9 +5,11 @@ public class HealthSystem : MonoBehaviour
     public GameObject xpOrbPrefab;
     public int maxHealth;
     private int currentHealth;
+    private Animator animator;
 
     void Start()
     {
+        animator = GetComponent<Animator>();
         currentHealth = maxHealth;
     }
 
@@ -16,11 +18,14 @@ public class HealthSystem : MonoBehaviour
         currentHealth -= damage;
         if (currentHealth <= 0)
         {
+            // Buat supaya parameter animator IsDead menjadi true
+            animator.SetBool("IsDead", true);
+            
             if (xpOrbPrefab != null)
             {
                 Instantiate(xpOrbPrefab, transform.position, Quaternion.identity); // Tambahkan baris ini
             }
-            Destroy(gameObject);
+            Destroy(gameObject, 2); // argumen kedua adalah waktu dalam detik sebelum objek dihancurkan
         }
     }
 
