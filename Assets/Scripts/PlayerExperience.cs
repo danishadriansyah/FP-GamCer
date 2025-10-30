@@ -24,7 +24,6 @@ public class PlayerExperience : MonoBehaviour
     {
         currentLevel++;
         currentXP -= xpToNextLevel;
-        // Gunakan variabel baru kita di sini, bukan angka mati
         xpToNextLevel = Mathf.RoundToInt(xpToNextLevel * xpMultiplier);
 
         Debug.Log("LEVEL UP! Sekarang Level " + currentLevel);
@@ -37,7 +36,7 @@ public class PlayerExperience : MonoBehaviour
         {
             int xpValue = other.GetComponent<ExperienceOrb>().xpValue;
             AddXP(xpValue);
-            Destroy(other.gameObject);
+            other.gameObject.SetActive(false);
         }
     }
 }

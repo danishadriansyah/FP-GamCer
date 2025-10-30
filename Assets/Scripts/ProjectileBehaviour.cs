@@ -38,7 +38,7 @@ public class ProjectileBehaviour : MonoBehaviour
                 {
                     enemyHealth.TakeDamage(1);
                 }
-                Destroy(gameObject);
+                gameObject.SetActive(false);
                 return;
             }
         }
@@ -47,7 +47,7 @@ public class ProjectileBehaviour : MonoBehaviour
         Vector3 screenPoint = mainCamera.WorldToViewportPoint(transform.position);
         if (screenPoint.x < -0.1f || screenPoint.x > 1.1f || screenPoint.y < -0.1f || screenPoint.y > 1.1f)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 }

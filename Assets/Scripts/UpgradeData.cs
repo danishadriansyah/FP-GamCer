@@ -5,6 +5,7 @@ public enum UpgradeType
     WeaponSpeed,
     WeaponDamage,
     PlayerSpeed,
+    HP,
     WeaponProjectileCount
 }
 

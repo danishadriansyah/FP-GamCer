@@ -60,6 +60,6 @@ public class EnemySpawner : MonoBehaviour
         }
         while (Vector2.Distance(spawnPos, player.position) < spawnSafeDistance);
 
-        Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
+        ObjectPooler.instance.SpawnFromPool("TimeAnomaly", spawnPos, Quaternion.identity);
     }
 }

@@ -10,16 +10,20 @@ public class GameManager : MonoBehaviour
     public GameObject levelUpScreen;
 
     [Header("Upgrade Settings")]
-    public List<UpgradeData> upgradePool; // Pastikan ini menggunakan UpgradeData
+    public List<UpgradeData> upgradePool;
     public Button[] upgradeButtons;
     public TextMeshProUGUI[] upgradeButtonTitles;
     public TextMeshProUGUI[] upgradeButtonDescs;
 
-    private List<UpgradeData> availableUpgrades; // Pastikan ini menggunakan UpgradeData
+    private List<UpgradeData> availableUpgrades;
+
+    
+    private GameObject player; 
 
     void Awake()
     {
         if (instance == null) instance = this;
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     public void ShowLevelUpScreen()
@@ -31,21 +35,48 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < upgradeButtons.Length; i++)
         {
-            upgradeButtonTitles[i].text = availableUpgrades[i].upgradeName;
-            upgradeButtonDescs[i].text = availableUpgrades[i].description;
+            if (i < availableUpgrades.Count)
+            {
+                upgradeButtonTitles[i].text = availableUpgrades[i].upgradeName;
+                upgradeButtonDescs[i].text = availableUpgrades[i].description;
 
-            int upgradeIndex = i;
-            upgradeButtons[i].onClick.RemoveAllListeners();
-            upgradeButtons[i].onClick.AddListener(() => ApplyUpgrade(upgradeIndex));
+                int upgradeIndex = i;
+                upgradeButtons[i].onClick.RemoveAllListeners();
+                upgradeButtons[i].onClick.AddListener(() => ApplyUpgrade(upgradeIndex));
+            }
         }
     }
 
     public void ApplyUpgrade(int upgradeIndex)
     {
-        UpgradeData chosenUpgrade = availableUpgrades[upgradeIndex]; // Pastikan ini menggunakan UpgradeData
+        UpgradeData chosenUpgrade = availableUpgrades[upgradeIndex];
         Debug.Log("Upgrade dipilih: " + chosenUpgrade.upgradeName);
 
-        // --- LOGIKA PENERAPAN UPGRADE AKAN DITARUH DI SINI ---
+        if (player == null)
+        {
+            Debug.LogError("Player tidak ditemukan! Pastikan Player memiliki Tag 'Player'.");
+            HideLevelUpScreen();
+            return;
+        }
+
+  
+        switch (chosenUpgrade.type)
+        {
+            case UpgradeType.WeaponSpeed:
+                player.GetComponent<AutoGun>().fireRate *= 0.85f;
+                break;
+            case UpgradeType.PlayerSpeed:
+                // Menambah kecepatan gerak
+                player.GetComponent<PlayerMovement>().moveSpeed *= 1.1f;
+                break;
+            case UpgradeType.HP:
+                HealthSystem playerHealth = player.GetComponent<HealthSystem>();
+                if (playerHealth != null)
+                {
+                    playerHealth.maxHealth += 10;  
+                }
+                break;
+        }
 
         HideLevelUpScreen();
     }

@@ -32,7 +32,7 @@ public class AutoGun : MonoBehaviour
             if (IsObjectVisible(enemy))
             {
                 // Buat proyektil baru
-                GameObject projectileObj = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+                GameObject projectileObj = ObjectPooler.instance.SpawnFromPool("Projectile", transform.position, Quaternion.identity);
 
                 // Beri tahu proyektil siapa targetnya
                 projectileObj.GetComponent<ProjectileBehaviour>().SetTarget(enemy.transform);
