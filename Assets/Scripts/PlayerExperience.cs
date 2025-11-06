@@ -9,6 +9,7 @@ public class PlayerExperience : MonoBehaviour
     [Header("Pengaturan Kenaikan Level")]
     public float xpMultiplier = 1.5f;
 
+    // Fungsi ini sekarang akan dipanggil oleh Orb
     public void AddXP(int xp)
     {
         currentXP += xp;
@@ -30,13 +31,6 @@ public class PlayerExperience : MonoBehaviour
         GameManager.instance.ShowLevelUpScreen();
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("ExperienceOrb"))
-        {
-            int xpValue = other.GetComponent<ExperienceOrb>().xpValue;
-            AddXP(xpValue);
-            other.gameObject.SetActive(false);
-        }
-    }
+    // Fungsi OnTriggerEnter2D untuk Orb SUDAH DIHAPUS
+    // Player tidak lagi mendeteksi Orb, Orb yang akan mendeteksi Player
 }
