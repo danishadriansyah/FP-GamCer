@@ -86,4 +86,6 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         levelUpScreen.SetActive(false);
     }
+
+
 }

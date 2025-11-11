@@ -1,5 +1,6 @@
 using UnityEngine;
 using System; // Diperlukan untuk Action
+using UnityEngine.SceneManagement;
 
 public class HealthSystem : MonoBehaviour
 {
@@ -60,6 +61,7 @@ public class HealthSystem : MonoBehaviour
         {
             OnEnemyKilled?.Invoke();
 
+            CurrencyManager.instance.AddSessionCurrency(1);
             // Munculkan Orb XP menggunakan Object Pooler
             if (xpOrbPrefab != null)
             {
@@ -70,6 +72,10 @@ public class HealthSystem : MonoBehaviour
         {
             // Logika jika Player mati (misal: tampilkan layar Game Over)
             Debug.Log("Player Telah Mati!");
+
+            CurrencyManager.instance.SaveSessionToTotal();
+            UnityEngine.SceneManagement.SceneManager.LoadScene("GameOverScene");
+            
         }
 
         // Kembalikan objek ke pool

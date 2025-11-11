@@ -116,41 +116,53 @@ public class AIDirector : MonoBehaviour
         if (playerTransform == null) return;
 
         string enemyTagToSpawn;
+        float roll = Random.value; // Lempar dadu sekali
 
         // --- INI LOGIKA BARUNYA ---
         if (currentStress > 15f)
         {
-            // 1. PEMAIN KESULITAN (Stres tinggi): 
-            // Kasih ampun, spawn musuh dasar saja
+            // 1. PEMAIN KESULITAN
             enemyTagToSpawn = "TimeAnomaly";
         }
-        else if (currentStress < -20f)
+        else if (currentStress < -30f) // Kita bikin lebih ekstrim syaratnya
         {
-            // 2. PEMAIN JAGO (Stres sangat negatif): 
-            // Hukum dengan "Gelombang Tekanan" (Pressure Wave)
-            // Kirim musuh cepat!
-            enemyTagToSpawn = "ChronoHound";
+            // 2. PEMAIN JAGO BANGET (Stres sangat negatif): 
+            // "GELOMBANG KEJUTAN" (Shock Wave)
+            // Kirim si Elite!
+            if (roll < 0.1f) // 10% kemungkinan kirim ELITE
+            {
+                enemyTagToSpawn = "EliteAnomaly";
+                Debug.LogWarning("AI Director: Mengirim GELOMBANG KEJUTAN (Elite)!");
+            }
+            else // 90% sisanya kirim si cepat
+            {
+                enemyTagToSpawn = "ChronoHound";
+            }
+        }
+        else if (currentStress < -10f)
+        {
+            // 3. PEMAIN JAGO (Stres negatif):
+            // "Gelombang Tekanan" (Pressure Wave)
+            if (roll < 0.6f)
+                enemyTagToSpawn = "ChronoHound";
+            else
+                enemyTagToSpawn = "TimeAnomaly";
         }
         else
         {
-            // 3. PEMAIN NORMAL (Stres di antara -20 dan 15): 
-            // Ini adalah "Gelombang Pengepungan" (Siege Wave)
-            // Kita campur musuh dasar (melee) dengan musuh penembak (ranged).
-            if (Random.value < 0.3f) // 30% kemungkinan spawn penembak
-            {
+            // 4. PEMAIN NORMAL: 
+            // "Gelombang Pengepungan" (Siege Wave)
+            if (roll < 0.15f)
+                enemyTagToSpawn = "VoidBehemoth";
+            else if (roll < 0.4f)
                 enemyTagToSpawn = "TemporalWeaver";
-            }
-            else // 70% kemungkinan spawn melee
-            {
+            else
                 enemyTagToSpawn = "TimeAnomaly";
-            }
         }
         // --- AKHIR LOGIKA BARU ---
 
-        // Tentukan posisi spawn
         Vector2 spawnPos = (Vector2)playerTransform.position + Random.insideUnitCircle.normalized * 15f;
-
-        // Panggil dari Object Pooler menggunakan tag yang sudah kita tentukan
         ObjectPooler.instance.SpawnFromPool(enemyTagToSpawn, spawnPos, Quaternion.identity);
     }
+
 }
