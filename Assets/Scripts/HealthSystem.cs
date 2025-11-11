@@ -8,6 +8,7 @@ public class HealthSystem : MonoBehaviour
     public GameObject xpOrbPrefab;
     public int maxHealth;
     private int currentHealth;
+    private Animator animator;
 
     [Header("Status")]
     public bool isPlayer = false; // Tandai ini di Inspector jika script ini untuk Player
@@ -20,6 +21,7 @@ public class HealthSystem : MonoBehaviour
 
     void Start()
     {
+        animator = GetComponent<Animator>();
         // Cek jika ini adalah Player
         if (gameObject.CompareTag("Player"))
         {
@@ -59,14 +61,16 @@ public class HealthSystem : MonoBehaviour
         // Jika ini adalah Musuh, siarkan event OnEnemyKilled
         if (!isPlayer)
         {
-            OnEnemyKilled?.Invoke();
+            // Buat supaya parameter animator IsDead menjadi true
+            animator.SetBool("IsDead", true);
+            //OnEnemyKilled?.Invoke();
 
-            CurrencyManager.instance.AddSessionCurrency(1);
-            // Munculkan Orb XP menggunakan Object Pooler
-            if (xpOrbPrefab != null)
-            {
-                ObjectPooler.instance.SpawnFromPool("XP_Orb", transform.position, Quaternion.identity);
-            }
+            ////CurrencyManager.instance.AddSessionCurrency(1);
+            //// Munculkan Orb XP menggunakan Object Pooler
+            //if (xpOrbPrefab != null)
+            //{
+            //    ObjectPooler.instance.SpawnFromPool("XP_Orb", transform.position, Quaternion.identity);
+            //}
         }
         else
         {
@@ -79,6 +83,18 @@ public class HealthSystem : MonoBehaviour
         }
 
         // Kembalikan objek ke pool
+        //gameObject.SetActive(false);
+    }
+
+    public void OnDeathAnimationEnd()
+    {
+        OnEnemyKilled?.Invoke();
+
+        if (xpOrbPrefab != null)
+        {
+            ObjectPooler.instance.SpawnFromPool("XP_Orb", transform.position, Quaternion.identity);
+        }
+
         gameObject.SetActive(false);
     }
 
