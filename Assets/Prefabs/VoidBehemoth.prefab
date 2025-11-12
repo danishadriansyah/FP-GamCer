@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7633766436819307026}
   - component: {fileID: 3370264334172735831}
   - component: {fileID: -6247807684624867315}
+  - component: {fileID: -6671576466397263024}
   m_Layer: 0
   m_Name: VoidBehemoth
   m_TagString: Enemy
@@ -201,3 +202,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-6671576466397263024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 688264463813624252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 114a9dcd65d749742b796557e6194c8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 2
+  rockHillPrefab: {fileID: 8451513414252156014, guid: df782e95e912c23449ebbdc737002798, type: 3}
+  spawnPoints:
+  - {fileID: 0}

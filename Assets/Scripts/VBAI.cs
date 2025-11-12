@@ -4,6 +4,7 @@ using UnityEngine;
 public class VBAI : MonoBehaviour
 {
     public float speed = 2f;
+    public GameObject rockHillPrefab;
     private Transform player;
     private Animator animator;
     private Rigidbody2D rb; // Variabel untuk Rigidbody2D
@@ -72,5 +73,10 @@ public class VBAI : MonoBehaviour
                 animator.SetBool("IsAttacking", false);
             }
         }
+    }
+    void SummonRockHill()
+    {
+        float yOffset = -0.5f;  // how much below Golem
+        Instantiate(rockHillPrefab, transform.position + new Vector3(0f, yOffset, 0f), Quaternion.identity);
     }
 }
