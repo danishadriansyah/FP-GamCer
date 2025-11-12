@@ -39,7 +39,6 @@ public class EnemyAI : MonoBehaviour
             {
                 rb.linearVelocity = Vector2.zero;
                 rb.angularVelocity = 0f;
-                rb.isKinematic = true;
                 // Disable the collider
                 Collider2D collider = GetComponent<Collider2D>();
                 if (collider != null)

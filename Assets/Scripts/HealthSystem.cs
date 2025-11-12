@@ -9,6 +9,7 @@ public class HealthSystem : MonoBehaviour
     public int maxHealth;
     private int currentHealth;
     private Animator animator;
+    private Rigidbody2D rb;
 
     [Header("Status")]
     public bool isPlayer = false; // Tandai ini di Inspector jika script ini untuk Player
@@ -21,6 +22,7 @@ public class HealthSystem : MonoBehaviour
 
     void Start()
     {
+        rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         // Cek jika ini adalah Player
         if (gameObject.CompareTag("Player"))
@@ -95,6 +97,11 @@ public class HealthSystem : MonoBehaviour
             ObjectPooler.instance.SpawnFromPool("XP_Orb", transform.position, Quaternion.identity);
         }
 
+        Collider2D collider = GetComponent<Collider2D>();
+        if (collider != null)
+        {
+            collider.enabled = true;
+        }
         gameObject.SetActive(false);
     }
 
