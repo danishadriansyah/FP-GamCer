@@ -89,16 +89,18 @@ public class RangedAI : MonoBehaviour
             fireTimer -= Time.fixedDeltaTime;
             if (fireTimer <= 0)
             {
+                animator.SetBool("IsAttacking", true);
                 // Beri tahu peluru arah tembak yang benar
-                Shoot(directionToPlayer);
+                //Shoot(directionToPlayer);
                 fireTimer = fireRate;
             }
         }
     }
 
     // Fungsi Shoot() sekarang menerima arah tembak
-    void Shoot(Vector2 directionToShoot)
+    void Shoot()
     {
+        Vector2 directionToPlayer = (player.position - transform.position).normalized;
         Vector3 spawnPosition = (firePoint != null) ? firePoint.position : transform.position;
 
         GameObject projectileGO = ObjectPooler.instance.SpawnFromPool(projectilePoolTag, spawnPosition, Quaternion.identity);
@@ -110,9 +112,10 @@ public class RangedAI : MonoBehaviour
             EnemyProjectile projectileScript = projectileGO.GetComponent<EnemyProjectile>();
             if (projectileScript != null)
             {
-                projectileScript.SetDirection(directionToShoot);
+                projectileScript.SetDirection(directionToPlayer);
             }
             // --- AKHIR PERBAIKAN ARAH TEMBAK ---
+            animator.SetBool("IsAttacking", false);
         }
     }
 }
