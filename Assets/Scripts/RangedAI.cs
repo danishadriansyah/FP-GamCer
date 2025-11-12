@@ -70,8 +70,19 @@ public class RangedAI : MonoBehaviour
             spriteRenderer.flipX = false; // Hadap kanan
         }
         // --- AKHIR PERBAIKAN ARAH HADAP ---
-
-        if (distanceToPlayer > stopDistance)
+        // Jika enemy mati maka tidak bisa disentuh
+        if (animator.GetBool("IsDead"))
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+            // Disable the collider
+            Collider2D collider = GetComponent<Collider2D>();
+            if (collider != null)
+            {
+                collider.enabled = false;
+            }
+        }
+        else if (distanceToPlayer > stopDistance)
         {
             // --- MODE: MENGEJAR ---
             rb.bodyType = RigidbodyType2D.Dynamic; // Biar bisa gerak
