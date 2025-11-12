@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))] // Memastikan objek ini punya Rigidbody2D
-public class EnemyAI : MonoBehaviour
+public class VBAI : MonoBehaviour
 {
     public float speed = 2f;
     private Transform player;
