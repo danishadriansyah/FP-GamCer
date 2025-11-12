@@ -65,15 +65,18 @@ public class GameManager : MonoBehaviour
             case UpgradeType.WeaponSpeed:
                 player.GetComponent<AutoGun>().fireRate *= 0.85f;
                 break;
+            case UpgradeType.WeaponDamage:
+                player.GetComponent<AutoGun>().projectileDamage += 1;
+                break;
             case UpgradeType.PlayerSpeed:
-                // Menambah kecepatan gerak
                 player.GetComponent<PlayerMovement>().moveSpeed *= 1.1f;
                 break;
             case UpgradeType.HP:
                 HealthSystem playerHealth = player.GetComponent<HealthSystem>();
                 if (playerHealth != null)
                 {
-                    playerHealth.maxHealth += 10;  
+                    playerHealth.maxHealth += 10;
+                    playerHealth.Heal(10);
                 }
                 break;
         }

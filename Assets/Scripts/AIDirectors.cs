@@ -19,12 +19,16 @@ public class AIDirector : MonoBehaviour
     public float baseWaveDuration = 20f;
     public float baseRestDuration = 8f;
 
-    // --- Variabel Internal (Sama seperti sebelumnya) ---
+    // --- Variabel Internal ---
     private float currentStress = 0f;
     private float stateTimer;
     private float spawnTimer;
     private DirectorState currentState;
     private Transform playerTransform;
+
+    // --- PERBAIKAN BUG #1 ---
+    private PlayerExperience playerExperience; // Script buat ngecek level player
+    // --- AKHIR PERBAIKAN ---
 
     private enum DirectorState
     {
@@ -34,7 +38,18 @@ public class AIDirector : MonoBehaviour
 
     void Start()
     {
-        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        // Cari Player
+        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+        if (playerObject != null)
+        {
+            playerTransform = playerObject.transform;
+
+            // --- PERBAIKAN BUG #1 ---
+            // Ambil script experience-nya dari Player
+            playerExperience = playerObject.GetComponent<PlayerExperience>();
+            // --- AKHIR PERBAIKAN ---
+        }
+
         currentState = DirectorState.Resting;
         stateTimer = baseRestDuration;
     }
@@ -53,27 +68,23 @@ public class AIDirector : MonoBehaviour
     void HandlePlayerDamaged(int damageAmount)
     {
         currentStress += damageStressAmount;
-        Debug.Log("Director: Pemain kena damage! Stres naik ke: " + currentStress);
     }
     void HandleEnemyKilled()
     {
         currentStress -= killReliefAmount;
-        Debug.Log("Director: Pemain membunuh musuh! Stres turun ke: " + currentStress);
     }
 
     // --- Logika Update (Sama seperti sebelumnya) ---
     void Update()
     {
-        // 1. Pulihkan Stres
-        if (currentStress > 0)
+        // 1. Pulihkan Stres (Decay to 0)
+        if (currentStress != 0)
         {
-            currentStress -= stressDecayRate * Time.deltaTime;
-            currentStress = Mathf.Max(0, currentStress);
-        }
-        else if (currentStress < 0)
-        {
-            currentStress += stressDecayRate * Time.deltaTime;
-            currentStress = Mathf.Min(0, currentStress);
+            float decay = stressDecayRate * Time.deltaTime;
+            if (currentStress > 0)
+                currentStress = Mathf.Max(0, currentStress - decay);
+            else
+                currentStress = Mathf.Min(0, currentStress + decay);
         }
 
         // 2. Logika State Machine (Ritme)
@@ -85,14 +96,12 @@ public class AIDirector : MonoBehaviour
                 currentState = DirectorState.Resting;
                 stateTimer = baseRestDuration + (currentStress * 0.1f);
                 stateTimer = Mathf.Clamp(stateTimer, baseRestDuration * 0.5f, baseRestDuration * 2f);
-                Debug.Log("Director: Masuk fase RESTING selama " + stateTimer + " detik.");
             }
             else if (currentState == DirectorState.Resting)
             {
                 currentState = DirectorState.Spawning;
                 stateTimer = baseWaveDuration - (currentStress * 0.2f);
                 stateTimer = Mathf.Clamp(stateTimer, baseWaveDuration * 0.5f, baseWaveDuration * 2f);
-                Debug.Log("Director: Masuk fase SPAWNING selama " + stateTimer + " detik.");
             }
         }
 
@@ -110,59 +119,63 @@ public class AIDirector : MonoBehaviour
         }
     }
 
-    // --- FUNGSI SpawnEnemy() TELAH DI-UPGRADE TOTAL ---
+    // --- PERBAIKAN BUG #2 ---
     void SpawnEnemy()
     {
         if (playerTransform == null) return;
 
-        string enemyTagToSpawn;
-        float roll = Random.value; // Lempar dadu sekali
+        // Ambil level player (dengan perbaikan Bug #1)
+        int playerLevel = 1;
+        if (playerExperience != null)
+        {
+            playerLevel = playerExperience.currentLevel;
+        }
 
-        // --- INI LOGIKA BARUNYA ---
-        if (currentStress > 15f)
-        {
-            // 1. PEMAIN KESULITAN
-            enemyTagToSpawn = "TimeAnomaly";
-        }
-        else if (currentStress < -30f) // Kita bikin lebih ekstrim syaratnya
-        {
-            // 2. PEMAIN JAGO BANGET (Stres sangat negatif): 
-            // "GELOMBANG KEJUTAN" (Shock Wave)
-            // Kirim si Elite!
-            if (roll < 0.1f) // 10% kemungkinan kirim ELITE
-            {
-                enemyTagToSpawn = "EliteAnomaly";
-                Debug.LogWarning("AI Director: Mengirim GELOMBANG KEJUTAN (Elite)!");
-            }
-            else // 90% sisanya kirim si cepat
-            {
-                enemyTagToSpawn = "ChronoHound";
-            }
-        }
-        else if (currentStress < -10f)
-        {
-            // 3. PEMAIN JAGO (Stres negatif):
-            // "Gelombang Tekanan" (Pressure Wave)
-            if (roll < 0.6f)
-                enemyTagToSpawn = "ChronoHound";
-            else
-                enemyTagToSpawn = "TimeAnomaly";
-        }
-        else
-        {
-            // 4. PEMAIN NORMAL: 
-            // "Gelombang Pengepungan" (Siege Wave)
-            if (roll < 0.15f)
-                enemyTagToSpawn = "VoidBehemoth";
-            else if (roll < 0.4f)
-                enemyTagToSpawn = "TemporalWeaver";
-            else
-                enemyTagToSpawn = "TimeAnomaly";
-        }
-        // --- AKHIR LOGIKA BARU ---
+        // --- Logika Probabilitas Dinamis ---
+        // Kita nggak pake 'if-else' yang kaku lagi. Kita pake 'Weighted Random'.
+        // Ini bikin komposisi gelombang (Wave Composition) lebih mantep.
 
+        List<string> spawnPool = new List<string>();
+
+        // 1. Musuh Dasar (Melee) - Selalu ada
+        spawnPool.Add("TimeAnomaly");
+        spawnPool.Add("TimeAnomaly");
+        spawnPool.Add("TimeAnomaly");
+
+        // 2. Musuh Cepat (Rusher)
+        if (currentStress < 0) 
+        {
+            spawnPool.Add("ChronoHound");
+            spawnPool.Add("ChronoHound");
+        }
+
+        // 3. Musuh Jarak Jauh (Ranged)
+        if (playerLevel >= 2) // Muncul setelah 1x upgrade
+        {
+            spawnPool.Add("TemporalWeaver");
+        }
+
+        // 4. Musuh Tank
+        if (playerLevel >= 4 && currentStress > -10)
+        {
+            spawnPool.Add("VoidBehemoth");
+        }
+
+        // 5. Musuh Elite
+        if (playerLevel >= 5 && currentStress < -20) // Muncul kalo pemain jago & level tinggi
+        {
+            spawnPool.Add("EliteAnomaly");
+        }
+
+        // --- Akhir Logika ---
+
+        // Pilih musuh secara acak dari 'spawnPool' yang udah kita buat
+        string enemyTagToSpawn = spawnPool[Random.Range(0, spawnPool.Count)];
+
+        // Tentukan posisi spawn
         Vector2 spawnPos = (Vector2)playerTransform.position + Random.insideUnitCircle.normalized * 15f;
+
+        // Panggil dari Object Pooler
         ObjectPooler.instance.SpawnFromPool(enemyTagToSpawn, spawnPos, Quaternion.identity);
     }
-
 }

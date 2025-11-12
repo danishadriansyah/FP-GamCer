@@ -7,6 +7,7 @@ public class ProjectileBehaviour : MonoBehaviour
     private Transform target;
     private Rigidbody2D rb;
     private Camera mainCamera;
+    private int damage;
 
     void Start()
     {
@@ -17,6 +18,11 @@ public class ProjectileBehaviour : MonoBehaviour
     public void SetTarget(Transform newTarget)
     {
         target = newTarget;
+    }
+
+    public void SetDamage(int amount)
+    {
+        damage = amount;
     }
 
     void FixedUpdate()

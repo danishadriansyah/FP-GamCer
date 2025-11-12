@@ -5,6 +5,7 @@ public class AutoGun : MonoBehaviour
 {
     public GameObject projectilePrefab;
     public float fireRate; // Kita perpanjang sedikit jeda tembaknya
+    public int projectileDamage = 1;
     private float nextFireTime;
     private Camera mainCamera;
 
@@ -35,7 +36,12 @@ public class AutoGun : MonoBehaviour
                 GameObject projectileObj = ObjectPooler.instance.SpawnFromPool("Projectile", transform.position, Quaternion.identity);
 
                 // Beri tahu proyektil siapa targetnya
-                projectileObj.GetComponent<ProjectileBehaviour>().SetTarget(enemy.transform);
+                ProjectileBehaviour projectile = projectileObj.GetComponent<ProjectileBehaviour>();
+                if (projectile != null)
+                {
+                    projectile.SetTarget(enemy.transform);
+                    projectile.SetDamage(projectileDamage); // <-- TAMBAKAN BARIS INI
+                }
             }
         }
     }
