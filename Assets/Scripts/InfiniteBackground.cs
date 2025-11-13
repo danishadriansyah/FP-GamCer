@@ -7,7 +7,7 @@ public class InfiniteBackground : MonoBehaviour
     public Transform player;
 
     [Header("Tilemap Dimensions (in world units)")]
-    public float tilemapWidth = 24f;   // total width of one tilemap
+    public float tilemapWidth = 23f;   // total width of one tilemap
     public float tilemapHeight = 14f;  // total height of one tilemap
 
     void Start()
