@@ -64,19 +64,19 @@ public class ExperienceOrb : MonoBehaviour
                 StopCoroutine(deactivateCoroutine);
             }
 
-            // 2. Beri XP ke Player
-            PlayerExperience playerExp = other.GetComponent<PlayerExperience>();
-            if (playerExp != null)
-            {
-                playerExp.AddXP(xpValue);
-            }
-
             // 3. Matikan magnet & collider
             target = null;
             col.enabled = false;
 
             // 4. Mulai animasi terserap
             StartCoroutine(AbsorbAnimation());
+
+            // 2. Beri XP ke Player
+            PlayerExperience playerExp = other.GetComponent<PlayerExperience>();
+            if (playerExp != null)
+            {
+                playerExp.AddXP(xpValue);
+            }
         }
     }
 
