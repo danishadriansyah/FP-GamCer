@@ -9,7 +9,6 @@ public class HealthSystem : MonoBehaviour
     public int maxHealth;
     private int currentHealth;
     private Animator animator;
-    private Rigidbody2D rb;
 
     [Header("Status")]
     public bool isPlayer = false; // Tandai ini di Inspector jika script ini untuk Player
@@ -22,7 +21,6 @@ public class HealthSystem : MonoBehaviour
 
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         // Cek jika ini adalah Player
         if (gameObject.CompareTag("Player"))
