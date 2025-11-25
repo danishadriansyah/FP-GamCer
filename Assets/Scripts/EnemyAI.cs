@@ -3,15 +3,25 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))] // Memastikan objek ini punya Rigidbody2D
 public class EnemyAI : MonoBehaviour
 {
+    [Header("Status Musuh")]
     public float speed = 2f;
+    public int damage = 10; // [BARU] Besar damage serangan
+    public float attackCooldown = 1f; // [BARU] Jeda waktu antar serangan (detik)
+
     private Transform player;
     private Animator animator;
     private Rigidbody2D rb; // Variabel untuk Rigidbody2D
+    private float lastAttackTime; // [BARU] Timer internal untuk cooldown
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-        rb = GetComponent<Rigidbody2D>(); // Ambil komponen Rigidbody2D
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        if (playerObj != null)
+        {
+            player = playerObj.transform;
+        }
+
+        rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
     }
 
@@ -37,31 +47,31 @@ public class EnemyAI : MonoBehaviour
             // Jika enemy mati maka tidak bisa disentuh
             if (animator.GetBool("IsDead"))
             {
-                rb.linearVelocity = Vector2.zero;
+                rb.linearVelocity = Vector2.zero; // Menghentikan gerak fisik
                 rb.angularVelocity = 0f;
-                // Disable the collider
+
+                // Disable the collider agar bisa dilewati
                 Collider2D collider = GetComponent<Collider2D>();
                 if (collider != null)
                 {
                     collider.enabled = false;
                 }
             }
-            // Berikan kecepatan pada Rigidbody, bukan mengubah posisi langsung
-            // Jika enemy tidak sedang menyerang maka bergerak, jika menyerang maka diam di tempat
+            // Jika enemy tidak sedang menyerang maka bergerak
             else if (!animator.GetBool("IsAttacking"))
             {
-                // Set parameter animator IsRunning menjadi true ketika objek bergerak
                 animator.SetBool("IsRunning", true);
                 rb.linearVelocity = direction * speed;
             }
+            // Jika menyerang maka diam di tempat
             else
             {
                 rb.linearVelocity = Vector2.zero;
             }
 
-            // Check if the enemy is close to the player
+            // Cek jarak untuk memicu animasi serangan
             float distance = Vector2.Distance(player.position, transform.position);
-            if (distance < 1.5f) // Replace 1.0f with the desired distance
+            if (distance < 1.5f)
             {
                 animator.SetBool("IsRunning", false);
                 animator.SetBool("IsAttacking", true);
@@ -69,6 +79,35 @@ public class EnemyAI : MonoBehaviour
             else
             {
                 animator.SetBool("IsAttacking", false);
+            }
+        }
+    }
+
+    // --- [BAGIAN BARU: LOGIKA PEMBERIAN DAMAGE] ---
+    // Fungsi ini dipanggil Unity terus-menerus selama musuh menempel pada objek lain
+    void OnCollisionStay2D(Collision2D collision)
+    {
+        // 1. Pastikan yang disentuh adalah Player
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            // 2. Jangan menyerang jika musuh sudah mati
+            if (animator.GetBool("IsDead")) return;
+
+            // 3. Cek cooldown serangan (agar HP tidak langsung habis dalam sekejap)
+            if (Time.time >= lastAttackTime + attackCooldown)
+            {
+                // 4. Ambil komponen HealthSystem dari Player
+                HealthSystem playerHealth = collision.gameObject.GetComponent<HealthSystem>();
+
+                // 5. Kurangi HP Player
+                if (playerHealth != null)
+                {
+                    playerHealth.TakeDamage(damage);
+                    // Debug.Log("Musuh menyerang! HP Player berkurang."); // Hapus komen ini jika ingin cek di Console
+
+                    // Catat waktu serangan ini untuk cooldown selanjutnya
+                    lastAttackTime = Time.time;
+                }
             }
         }
     }
