@@ -5,13 +5,13 @@ public class EnemyAI : MonoBehaviour
 {
     [Header("Status Musuh")]
     public float speed = 2f;
-    public int damage = 10; // [BARU] Besar damage serangan
-    public float attackCooldown = 1f; // [BARU] Jeda waktu antar serangan (detik)
+    public int damage = 10; 
+    public float attackCooldown = 1f; 
 
     private Transform player;
     private Animator animator;
-    private Rigidbody2D rb; // Variabel untuk Rigidbody2D
-    private float lastAttackTime; // [BARU] Timer internal untuk cooldown
+    private Rigidbody2D rb; 
+    private float lastAttackTime; 
 
     void Start()
     {

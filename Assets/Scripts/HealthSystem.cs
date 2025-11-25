@@ -1,5 +1,5 @@
 using UnityEngine;
-using System; // Diperlukan untuk Action
+using System; 
 using UnityEngine.SceneManagement;
 
 public class HealthSystem : MonoBehaviour
@@ -7,22 +7,18 @@ public class HealthSystem : MonoBehaviour
     [Header("Data")]
     public GameObject xpOrbPrefab;
     public int maxHealth;
-    private int currentHealth;
+    public int currentHealth;
     private Animator animator;
 
     [Header("Status")]
-    public bool isPlayer = false; // Tandai ini di Inspector jika script ini untuk Player
+    public bool isPlayer = false; 
 
-    // --- SALURAN SIARAN (EVENTS) ---
-    // Siaran saat Player kena damage
     public static event Action<int> OnPlayerDamaged;
-    // Siaran saat Musuh terbunuh
     public static event Action OnEnemyKilled;
 
     void Start()
     {
         animator = GetComponent<Animator>();
-        // Cek jika ini adalah Player
         if (gameObject.CompareTag("Player"))
         {
             isPlayer = true;
@@ -30,7 +26,6 @@ public class HealthSystem : MonoBehaviour
         currentHealth = maxHealth;
     }
 
-    // Fungsi ini ditambahkan agar upgrade HP bisa mengisi darah
     public void Heal(int amount)
     {
         currentHealth += amount;

@@ -1,18 +1,30 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))] // Memastikan objek ini punya Rigidbody2D
+[RequireComponent(typeof(Rigidbody2D))]
 public class VBAI : MonoBehaviour
 {
-    public float speed = 2f;
+    [Header("Status Void Behemoth")]
+    public float speed = 1.5f; // Sedikit lebih lambat karena dia tank
+    public int damage = 20;    // [BARU] Damage lebih besar dari musuh biasa
+    public float attackCooldown = 1.5f; // [BARU] Serangan lebih lambat tapi sakit
+
+    [Header("Skill Settings")]
     public GameObject rockHillPrefab;
+
     private Transform player;
     private Animator animator;
-    private Rigidbody2D rb; // Variabel untuk Rigidbody2D
+    private Rigidbody2D rb;
+    private float lastAttackTime; // [BARU] Timer cooldown
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-        rb = GetComponent<Rigidbody2D>(); // Ambil komponen Rigidbody2D
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        if (playerObj != null)
+        {
+            player = playerObj.transform;
+        }
+
+        rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
     }
 
@@ -23,46 +35,38 @@ public class VBAI : MonoBehaviour
             // Hitung arah ke pemain
             Vector2 direction = (player.position - transform.position).normalized;
 
-            // Check if the enemy is moving left
+            // Cek apakah musuh bergerak ke kiri (untuk membalik sprite)
             bool isMovingLeft = direction.x < 0;
-
-            // Set the local scale of the sprite to mirror it
             Vector3 localScale = transform.localScale;
-            // Flip only if needed
             if ((isMovingLeft && localScale.x > 0) || (!isMovingLeft && localScale.x < 0))
             {
                 localScale.x *= -1;
                 transform.localScale = localScale;
             }
 
-            // Jika enemy mati maka tidak bisa disentuh
+            // Logika saat Mati
             if (animator.GetBool("IsDead"))
             {
                 rb.linearVelocity = Vector2.zero;
                 rb.angularVelocity = 0f;
-                // Disable the collider
                 Collider2D collider = GetComponent<Collider2D>();
-                if (collider != null)
-                {
-                    collider.enabled = false;
-                }
+                if (collider != null) collider.enabled = false;
             }
-            // Berikan kecepatan pada Rigidbody, bukan mengubah posisi langsung
-            // Jika enemy tidak sedang menyerang maka bergerak, jika menyerang maka diam di tempat
+            // Logika saat Bergerak (Mengejar)
             else if (!animator.GetBool("IsAttacking"))
             {
-                // Set parameter animator IsRunning menjadi true ketika objek bergerak
                 animator.SetBool("IsRunning", true);
                 rb.linearVelocity = direction * speed;
             }
+            // Logika saat Menyerang (Diam)
             else
             {
                 rb.linearVelocity = Vector2.zero;
             }
 
-            // Check if the enemy is close to the player
+            // Cek Jarak untuk Memicu Animasi Serangan
             float distance = Vector2.Distance(player.position, transform.position);
-            if (distance < 1.5f) // Replace 1.0f with the desired distance
+            if (distance < 2.0f) // Jarak serangan sedikit lebih jauh dari musuh biasa
             {
                 animator.SetBool("IsRunning", false);
                 animator.SetBool("IsAttacking", true);
@@ -73,9 +77,41 @@ public class VBAI : MonoBehaviour
             }
         }
     }
+
+    // --- [BAGIAN BARU: LOGIKA DAMAGE KONTAK] ---
+    void OnCollisionStay2D(Collision2D collision)
+    {
+        // 1. Cek apakah menabrak Player
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            // 2. Cek apakah Behemoth sudah mati
+            if (animator.GetBool("IsDead")) return;
+
+            // 3. Cek Cooldown
+            if (Time.time >= lastAttackTime + attackCooldown)
+            {
+                // 4. Ambil darah pemain
+                HealthSystem playerHealth = collision.gameObject.GetComponent<HealthSystem>();
+
+                // 5. Berikan Damage
+                if (playerHealth != null)
+                {
+                    playerHealth.TakeDamage(damage);
+                    Debug.Log("Void Behemoth Menghantam Player! Damage: " + damage);
+
+                    lastAttackTime = Time.time; // Reset cooldown
+                }
+            }
+        }
+    }
+
+    // Fungsi ini dipanggil oleh Animation Event (pastikan sudah di-set di animasi serangan)
     void SummonRockHill()
     {
-        float yOffset = -0.5f;  // how much below Golem
-        Instantiate(rockHillPrefab, transform.position + new Vector3(0f, yOffset, 0f), Quaternion.identity);
+        if (rockHillPrefab != null)
+        {
+            float yOffset = -0.5f;
+            Instantiate(rockHillPrefab, transform.position + new Vector3(0f, yOffset, 0f), Quaternion.identity);
+        }
     }
 }

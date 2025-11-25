@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float moveSpeed = 5f;
+    public float moveSpeed = 7f;
     private Rigidbody2D rb;
     private Vector2 moveDirection;
 
@@ -18,7 +18,6 @@ public class PlayerMovement : MonoBehaviour
         moveDirection = new Vector2(moveX, moveY).normalized;
     }
 
-    // Terapkan fisika di FixedUpdate
     void FixedUpdate()
     {
         rb.linearVelocity = moveDirection * moveSpeed;
