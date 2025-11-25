@@ -1,29 +1,37 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using TMPro; // JANGAN LUPA TAMBAHIN INI
 
 public class MainMenuManager : MonoBehaviour
 {
-    public TextMeshProUGUI totalCurrencyText; // Seret UI Text buat nampilin duit
+    [Header("Konfigurasi Scene")]
+    [Tooltip("Ketik nama scene game kamu di sini (misal: SampleScene)")]
+    public string namaSceneGame;
 
-    void Start()
+    void Update()
     {
-        // Pastikan CurrencyManager udah siap
-        if (CurrencyManager.instance != null)
+        // Mendeteksi tekanan tombol keyboard atau klik mouse apa saja
+        if (Input.anyKeyDown)
         {
-            // Tampilkan total duit yang kita punya
-            totalCurrencyText.text = "Total Duit: " + CurrencyManager.instance.GetTotalCurrency();
+            MulaiGame();
         }
     }
 
-    public void PlayGame()
+    void MulaiGame()
     {
-        // Kasih tau CurrencyManager kita mau mulai run baru
+        // 1. Reset uang sesi (Penting biar duitnya mulai dari 0 lagi pas main)
         if (CurrencyManager.instance != null)
         {
             CurrencyManager.instance.StartNewRun();
         }
-        
-        SceneManager.LoadScene("SampleScene"); 
+
+        // 2. Pindah Scene sesuai nama yang ditulis di Inspector
+        if (!string.IsNullOrEmpty(namaSceneGame))
+        {
+            SceneManager.LoadScene(namaSceneGame);
+        }
+        else
+        {
+            Debug.LogError("Waduh! Nama Scene belum diisi di Inspector 'MainMenuManager'!");
+        }
     }
 }

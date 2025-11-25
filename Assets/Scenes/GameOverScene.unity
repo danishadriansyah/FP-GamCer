@@ -345,7 +345,7 @@ GameObject:
   - component: {fileID: 1672215942}
   - component: {fileID: 1672215941}
   m_Layer: 0
-  m_Name: Square
+  m_Name: BackDrop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
