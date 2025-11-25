@@ -72,7 +72,7 @@ public class HealthSystem : MonoBehaviour
             // Logika jika Player mati (misal: tampilkan layar Game Over)
             Debug.Log("Player Telah Mati!");
 
-            CurrencyManager.instance.SaveSessionToTotal();
+            //CurrencyManager.instance.SaveSessionToTotal();
             UnityEngine.SceneManagement.SceneManager.LoadScene("GameOverScene");
             
         }
