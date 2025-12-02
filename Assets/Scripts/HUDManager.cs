@@ -12,6 +12,7 @@ public class HUDManager : MonoBehaviour
     public Slider healthSlider;
     public Slider xpSlider;
     public TextMeshProUGUI levelText;
+    public TextMeshProUGUI timerText;
 
     void Start()
     {
@@ -35,6 +36,17 @@ public class HUDManager : MonoBehaviour
 
         UpdateHealthBar();
         UpdateXPBar();
+
+        if (AIDirector.instance != null)
+        {
+            float timeLeft = AIDirector.instance.gameDuration - AIDirector.instance.gameTime;
+            if (timeLeft < 0) timeLeft = 0;
+
+            // Format menit:detik
+            int minutes = Mathf.FloorToInt(timeLeft / 60F);
+            int seconds = Mathf.FloorToInt(timeLeft % 60F);
+            timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+        }
     }
 
     void UpdateHealthBar()

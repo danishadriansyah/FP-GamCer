@@ -9,6 +9,7 @@ TagManager:
   - ExperienceOrb
   - EnemyProjectile
   - Consumable
+  - Boss
   layers:
   - Default
   - TransparentFX

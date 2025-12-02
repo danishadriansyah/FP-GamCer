@@ -4,7 +4,18 @@ using UnityEngine;
 
 public class AIDirector : MonoBehaviour
 {
-    // --- Pengaturan (Sama seperti sebelumnya) ---
+    // Singleton agar mudah diakses oleh HUD
+    public static AIDirector instance;
+
+    // --- PENGATURAN BARU: GAME LOOP (Timer & Boss) ---
+    [Header("Pengaturan Game Loop")]
+    public float gameDuration = 10f; // Durasi game dalam detik (misal 300 = 5 menit)
+
+    [Header("Status Game")]
+    public float gameTime = 0f;       // Waktu yang sudah berjalan
+    public bool bossSpawned = false;  // Penanda apakah Boss sudah muncul
+
+    // --- PENGATURAN LAMA (Stress & Wave) ---
     [Header("Pengaturan Intensitas")]
     public float damageStressAmount = 10f;
     public float killReliefAmount = 2f;
@@ -19,16 +30,14 @@ public class AIDirector : MonoBehaviour
     public float baseWaveDuration = 20f;
     public float baseRestDuration = 8f;
 
-    // --- Variabel Internal ---
+    // --- VARIABEL INTERNAL ---
     private float currentStress = 0f;
     private float stateTimer;
     private float spawnTimer;
     private DirectorState currentState;
-    private Transform playerTransform;
 
-    // --- PERBAIKAN BUG #1 ---
-    private PlayerExperience playerExperience; // Script buat ngecek level player
-    // --- AKHIR PERBAIKAN ---
+    private Transform playerTransform;
+    private PlayerExperience playerExperience; // Referensi untuk cek level pemain
 
     private enum DirectorState
     {
@@ -36,25 +45,29 @@ public class AIDirector : MonoBehaviour
         Resting
     }
 
+    void Awake()
+    {
+        // Setup Singleton
+        if (instance == null) instance = this;
+        else Destroy(gameObject);
+    }
+
     void Start()
     {
-        // Cari Player
+        // Cari Player & Komponennya
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
         if (playerObject != null)
         {
             playerTransform = playerObject.transform;
-
-            // --- PERBAIKAN BUG #1 ---
-            // Ambil script experience-nya dari Player
             playerExperience = playerObject.GetComponent<PlayerExperience>();
-            // --- AKHIR PERBAIKAN ---
         }
 
+        // Setup awal state director
         currentState = DirectorState.Resting;
         stateTimer = baseRestDuration;
     }
 
-    // --- Event Handlers (Sama seperti sebelumnya) ---
+    // --- EVENT HANDLERS (Sistem Stress) ---
     void OnEnable()
     {
         HealthSystem.OnPlayerDamaged += HandlePlayerDamaged;
@@ -74,10 +87,26 @@ public class AIDirector : MonoBehaviour
         currentStress -= killReliefAmount;
     }
 
-    // --- Logika Update (Sama seperti sebelumnya) ---
+    // --- UPDATE LOOP ---
     void Update()
     {
-        // 1. Pulihkan Stres (Decay to 0)
+        // 1. CEK APAKAH BOSS SUDAH ADA?
+        // Jika Boss sudah muncul, Director berhenti kerja (tidak spawn musuh kecil lagi)
+        if (bossSpawned) return;
+
+        // 2. HITUNG WAKTU MUNDUR
+        gameTime += Time.deltaTime;
+
+        // 3. CEK JIKA WAKTU HABIS -> SPAWN BOSS
+        if (gameTime >= gameDuration)
+        {
+            SpawnBoss();
+            return; // Keluar dari fungsi Update agar kode di bawah tidak dijalankan
+        }
+
+        // --- JIKA BELUM BOSS, JALANKAN LOGIKA NORMAL (WAVES) ---
+
+        // A. Pulihkan Stres (Decay)
         if (currentStress != 0)
         {
             float decay = stressDecayRate * Time.deltaTime;
@@ -87,95 +116,123 @@ public class AIDirector : MonoBehaviour
                 currentStress = Mathf.Min(0, currentStress + decay);
         }
 
-        // 2. Logika State Machine (Ritme)
+        // B. Logika State Machine (Pindah Fase Resting <-> Spawning)
         stateTimer -= Time.deltaTime;
         if (stateTimer <= 0)
         {
             if (currentState == DirectorState.Spawning)
             {
                 currentState = DirectorState.Resting;
+                // Durasi istirahat dipengaruhi stres (makin stres, makin lama istirahat)
                 stateTimer = baseRestDuration + (currentStress * 0.1f);
                 stateTimer = Mathf.Clamp(stateTimer, baseRestDuration * 0.5f, baseRestDuration * 2f);
             }
             else if (currentState == DirectorState.Resting)
             {
                 currentState = DirectorState.Spawning;
+                // Durasi wave dipengaruhi stres (makin stres, wave makin sebentar)
                 stateTimer = baseWaveDuration - (currentStress * 0.2f);
                 stateTimer = Mathf.Clamp(stateTimer, baseWaveDuration * 0.5f, baseWaveDuration * 2f);
             }
         }
 
-        // 3. Logika Spawning
+        // C. Logika Spawning Musuh
         if (currentState == DirectorState.Spawning)
         {
             spawnTimer -= Time.deltaTime;
             if (spawnTimer <= 0)
             {
-                SpawnEnemy(); // Panggil fungsi spawn yang baru
+                SpawnEnemy(); // Panggil fungsi spawn musuh biasa
 
+                // Hitung interval spawn berikutnya berdasarkan stres
                 float spawnInterval = baseSpawnInterval + (currentStress * 0.05f);
                 spawnTimer = Mathf.Clamp(spawnInterval, minSpawnInterval, maxSpawnInterval);
             }
         }
     }
 
-    // --- PERBAIKAN BUG #2 ---
+    // --- LOGIKA SPAWN MUSUH BIASA ---
     void SpawnEnemy()
     {
         if (playerTransform == null) return;
 
-        // Ambil level player (dengan perbaikan Bug #1)
+        // Ambil level player
         int playerLevel = 1;
         if (playerExperience != null)
         {
             playerLevel = playerExperience.currentLevel;
         }
 
-        // --- Logika Probabilitas Dinamis ---
-        // Kita nggak pake 'if-else' yang kaku lagi. Kita pake 'Weighted Random'.
-        // Ini bikin komposisi gelombang (Wave Composition) lebih mantep.
-
+        // --- Komposisi Wave Dinamis (Berdasarkan Level & Stress) ---
         List<string> spawnPool = new List<string>();
 
-        // 1. Musuh Dasar (Melee) - Selalu ada
+        // 1. Musuh Dasar (Selalu ada)
         spawnPool.Add("TimeAnomaly");
         spawnPool.Add("TimeAnomaly");
         spawnPool.Add("TimeAnomaly");
 
-        // 2. Musuh Cepat (Rusher)
-        if (currentStress < 0) 
+        // 2. Musuh Cepat (Kalau pemain jago / stress rendah)
+        if (currentStress < 0)
         {
             spawnPool.Add("ChronoHound");
             spawnPool.Add("ChronoHound");
         }
 
-        // 3. Musuh Jarak Jauh (Ranged)
-        if (playerLevel >= 2) // Muncul setelah 1x upgrade
+        // 3. Musuh Ranged (Mulai Level 2)
+        if (playerLevel >= 2)
         {
             spawnPool.Add("TemporalWeaver");
         }
 
-        // 4. Musuh Tank
+        // 4. Musuh Tank (Mulai Level 4, asalkan tidak terlalu stress)
         if (playerLevel >= 4 && currentStress > -10)
         {
             spawnPool.Add("VoidBehemoth");
         }
 
-        // 5. Musuh Elite
-        if (playerLevel >= 5 && currentStress < -20) // Muncul kalo pemain jago & level tinggi
+        // 5. Musuh Elite (Mulai Level 5 & Pemain Jago Banget)
+        if (playerLevel >= 5 && currentStress < -20)
         {
             spawnPool.Add("EliteAnomaly");
         }
 
-        // --- Akhir Logika ---
-
-        // Pilih musuh secara acak dari 'spawnPool' yang udah kita buat
+        // Pilih musuh random dari pool
         string enemyTagToSpawn = spawnPool[Random.Range(0, spawnPool.Count)];
 
-        // Tentukan posisi spawn
+        // Tentukan posisi spawn (Random di sekitar player)
         Vector2 spawnPos = (Vector2)playerTransform.position + Random.insideUnitCircle.normalized * 15f;
 
-        // Panggil dari Object Pooler
+        // Spawn dari Pool
         ObjectPooler.instance.SpawnFromPool(enemyTagToSpawn, spawnPos, Quaternion.identity);
+    }
+
+    // --- LOGIKA SPAWN BOSS (BARU) ---
+    void SpawnBoss()
+    {
+        bossSpawned = true;
+        Debug.Log("[!] WAKTU HABIS! FINAL BOSS MUNCUL! [!]");
+
+        // 1. Hapus/Matikan semua musuh kecil yang tersisa biar duel adil (Opsional)
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (GameObject e in enemies)
+        {
+            e.SetActive(false);
+        }
+
+        // 2. Spawn Boss di posisi tetap (misal di atas player)
+        if (playerTransform != null)
+        {
+            Vector2 bossSpawnPos = (Vector2)playerTransform.position + new Vector2(0, 10f);
+
+            // Pastikan Tag di ObjectPooler adalah "FinalBoss"
+            ObjectPooler.instance.SpawnFromPool("FinalBoss", bossSpawnPos, Quaternion.identity);
+        }
+    }
+
+    // --- HELPER UNTUK HUD ---
+    public float GetTimeLeft()
+    {
+        // Mengembalikan sisa waktu (minimal 0)
+        return Mathf.Max(0, gameDuration - gameTime);
     }
 }
