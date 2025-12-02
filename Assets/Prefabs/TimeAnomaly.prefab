@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 2562477712942113743}
   - component: {fileID: 3370264334172735831}
   - component: {fileID: -6247807684624867315}
+  - component: {fileID: -1627078603986596941}
   m_Layer: 0
   m_Name: TimeAnomaly
   m_TagString: Enemy
@@ -178,6 +179,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2
+  damage: 10
+  attackCooldown: 1
 --- !u!114 &3370264334172735831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -192,6 +195,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   xpOrbPrefab: {fileID: 8357088097764932015, guid: 84504763953c4d4479b1542c6fee50b8, type: 3}
   maxHealth: 7
+  currentHealth: 0
   isPlayer: 0
 --- !u!95 &-6247807684624867315
 Animator:
@@ -215,3 +219,17 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-1627078603986596941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 688264463813624252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c42be7091e83b9f46be89c34b28a4bba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashMaterial: {fileID: 2100000, guid: 1fe04f448277a834f98f29cb6a062d8a, type: 2}
+  flashDuration: 0.1

@@ -33691,7 +33691,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7442288518682790962, guid: 26ab97cf26f91e949b7414b955339c87, type: 3}
   m_PrefabInstance: {fileID: 8572458868162879356}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 2070236522}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f135d4b538f866e419f9654e905e24b1, type: 3}
@@ -33702,12 +33702,31 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6698018229499222088, guid: 26ab97cf26f91e949b7414b955339c87, type: 3}
   m_PrefabInstance: {fileID: 8572458868162879356}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 2070236522}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71477eaa1d7c3be439d71a8453c58f0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2070236522 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4483335928792507156, guid: 26ab97cf26f91e949b7414b955339c87, type: 3}
+  m_PrefabInstance: {fileID: 8572458868162879356}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2070236528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2070236522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c42be7091e83b9f46be89c34b28a4bba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashMaterial: {fileID: 0}
+  flashDuration: 0.1
 --- !u!1001 &2072437973
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33877,7 +33896,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4483335928792507156, guid: 26ab97cf26f91e949b7414b955339c87, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2070236528}
   m_SourcePrefab: {fileID: 100100000, guid: 26ab97cf26f91e949b7414b955339c87, type: 3}
 --- !u!1001 &8841962609935126194
 PrefabInstance:

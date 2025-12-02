@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 3370264334172735831}
   - component: {fileID: -6247807684624867315}
   - component: {fileID: 9041706861488189523}
+  - component: {fileID: 1446640800249645340}
   m_Layer: 0
   m_Name: TemporalWeaver
   m_TagString: Enemy
@@ -158,7 +159,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.31, y: 0.32}
+    oldSize: {x: 0.96875, y: 1}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -180,6 +181,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   xpOrbPrefab: {fileID: 8357088097764932015, guid: 84504763953c4d4479b1542c6fee50b8, type: 3}
   maxHealth: 5
+  currentHealth: 0
   isPlayer: 0
 --- !u!95 &-6247807684624867315
 Animator:
@@ -220,6 +222,20 @@ MonoBehaviour:
   fireRate: 1.5
   projectilePoolTag: EnemyProjectile
   firePoint: {fileID: 6584174103202786836}
+--- !u!114 &1446640800249645340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 688264463813624252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c42be7091e83b9f46be89c34b28a4bba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashMaterial: {fileID: 2100000, guid: 1fe04f448277a834f98f29cb6a062d8a, type: 2}
+  flashDuration: 0.1
 --- !u!1 &5962418136420169032
 GameObject:
   m_ObjectHideFlags: 0

@@ -37,6 +37,8 @@ public class HealthSystem : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        GetComponent<SpriteFlash>().Flash();
+
         currentHealth -= damage;
 
         // Jika ini adalah Player, siarkan event OnPlayerDamaged
