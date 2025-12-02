@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))] // Memastikan objek ini punya Rigidbody2D
@@ -6,12 +7,14 @@ public class EnemyAI : MonoBehaviour
     [Header("Status Musuh")]
     public float speed = 2f;
     public int damage = 10; 
-    public float attackCooldown = 1f; 
+    public float attackCooldown = 0.5f; 
 
     private Transform player;
     private Animator animator;
     private Rigidbody2D rb; 
-    private float lastAttackTime; 
+    private float lastAttackTime;
+
+    private bool isAttacking = false;
 
     void Start()
     {
@@ -27,6 +30,12 @@ public class EnemyAI : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (isAttacking)
+        {
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
+
         if (player != null)
         {
             // Hitung arah ke pemain
@@ -63,24 +72,26 @@ public class EnemyAI : MonoBehaviour
                 animator.SetBool("IsRunning", true);
                 rb.linearVelocity = direction * speed;
             }
-            // Jika menyerang maka diam di tempat
-            else
-            {
-                rb.linearVelocity = Vector2.zero;
-            }
 
             // Cek jarak untuk memicu animasi serangan
             float distance = Vector2.Distance(player.position, transform.position);
-            if (distance < 1.5f)
+            if (!isAttacking && distance < 1.5f)
             {
+                isAttacking = true;
                 animator.SetBool("IsRunning", false);
                 animator.SetBool("IsAttacking", true);
-            }
-            else
-            {
-                animator.SetBool("IsAttacking", false);
+
+                rb.bodyType = RigidbodyType2D.Kinematic;
+                rb.linearVelocity = Vector2.zero;
             }
         }
+    }
+
+    void EnableMovement()
+    {
+        animator.SetBool("IsAttacking", false);
+        rb.bodyType = RigidbodyType2D.Dynamic;
+        isAttacking = false;
     }
 
     // --- [BAGIAN BARU: LOGIKA PEMBERIAN DAMAGE] ---

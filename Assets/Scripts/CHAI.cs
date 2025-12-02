@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))] // Memastikan objek ini punya Rigidbody2D
@@ -11,7 +12,9 @@ public class CHAI : MonoBehaviour
     private Transform player;
     private Animator animator;
     private Rigidbody2D rb; 
-    private float lastAttackTime; 
+    private float lastAttackTime;
+
+    private bool isAttacking = false;
 
     void Start()
     {
@@ -27,6 +30,12 @@ public class CHAI : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (isAttacking)
+        {
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
+
         if (player != null)
         {
             // Hitung arah ke pemain
@@ -67,11 +76,25 @@ public class CHAI : MonoBehaviour
                 float distance = Vector2.Distance(player.position, transform.position);
                 if (distance < 1.5f)
                 {
+                    isAttacking = true;
                     animator.SetBool("IsRunning", false);
+
+                    rb.bodyType = RigidbodyType2D.Kinematic;
+                    rb.linearVelocity = Vector2.zero;
+
+                    StartCoroutine(AttackPause(attackCooldown));
                 }
             }
                 
         }
+    }
+
+    IEnumerator AttackPause(float atkSpeed)
+    {
+        yield return new WaitForSeconds(atkSpeed); // duration of attack animation
+        animator.SetBool("IsRunning", true);
+        rb.bodyType = RigidbodyType2D.Dynamic;
+        isAttacking = false; // movement resumes
     }
 
     // --- [BAGIAN BARU: LOGIKA PEMBERIAN DAMAGE] ---

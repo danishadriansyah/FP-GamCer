@@ -16,6 +16,8 @@ public class VBAI : MonoBehaviour
     private Rigidbody2D rb;
     private float lastAttackTime; // [BARU] Timer cooldown
 
+    private bool isAttacking = false;
+
     void Start()
     {
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
@@ -30,6 +32,12 @@ public class VBAI : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (isAttacking)
+        {
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
+
         if (player != null)
         {
             // Hitung arah ke pemain
@@ -58,23 +66,36 @@ public class VBAI : MonoBehaviour
                 animator.SetBool("IsRunning", true);
                 rb.linearVelocity = direction * speed;
             }
-            // Logika saat Menyerang (Diam)
-            else
-            {
-                rb.linearVelocity = Vector2.zero;
-            }
 
             // Cek Jarak untuk Memicu Animasi Serangan
             float distance = Vector2.Distance(player.position, transform.position);
             if (distance < 2.0f) // Jarak serangan sedikit lebih jauh dari musuh biasa
             {
+                isAttacking = true;
                 animator.SetBool("IsRunning", false);
                 animator.SetBool("IsAttacking", true);
+
+                rb.bodyType = RigidbodyType2D.Kinematic;
+                rb.linearVelocity = Vector2.zero;
             }
-            else
-            {
-                animator.SetBool("IsAttacking", false);
-            }
+            
+        }
+    }
+
+    void EnableMovement()
+    {
+        animator.SetBool("IsAttacking", false);
+        rb.bodyType = RigidbodyType2D.Dynamic;
+        isAttacking = false;
+    }
+
+    // Fungsi ini dipanggil oleh Animation Event (pastikan sudah di-set di animasi serangan)
+    void SummonRockHill()
+    {
+        if (rockHillPrefab != null)
+        {
+            float yOffset = -0.5f;
+            Instantiate(rockHillPrefab, transform.position + new Vector3(0f, yOffset, 0f), Quaternion.identity);
         }
     }
 
@@ -104,14 +125,5 @@ public class VBAI : MonoBehaviour
             }
         }
     }
-
-    // Fungsi ini dipanggil oleh Animation Event (pastikan sudah di-set di animasi serangan)
-    void SummonRockHill()
-    {
-        if (rockHillPrefab != null)
-        {
-            float yOffset = -0.5f;
-            Instantiate(rockHillPrefab, transform.position + new Vector3(0f, yOffset, 0f), Quaternion.identity);
-        }
-    }
+    
 }
