@@ -9,7 +9,6 @@ public class GameOverManager : MonoBehaviour
 
     void Update()
     {
-        // Deteksi jika pemain menekan tombol APAPUN (Keyboard / Mouse)
         if (Input.anyKeyDown)
         {
             PindahScene();
