@@ -1,27 +1,31 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using TMPro; // JANGAN LUPA TAMBAHIN INI
 
 public class GameOverManager : MonoBehaviour
 {
-    public TextMeshProUGUI sessionCurrencyText; // Text buat duit run ini
-    public TextMeshProUGUI totalCurrencyText;   // Text buat total duit
+    [Header("Navigasi")]
+    [Tooltip("Ketik nama scene tujuan di sini (misal: MainMenuScene atau SampleScene)")]
+    public string namaSceneTujuan = "MainMenuScene";
 
-    void Start()
+    void Update()
     {
-        // Pastikan CurrencyManager ada
-        if (CurrencyManager.instance != null)
+        // Deteksi jika pemain menekan tombol APAPUN (Keyboard / Mouse)
+        if (Input.anyKeyDown)
         {
-            // Tampilkan duit yang didapet di run ini
-            sessionCurrencyText.text = "Duit Didapat: " + CurrencyManager.instance.GetSessionCurrency();
-
-            // Tampilkan total duit sekarang
-            totalCurrencyText.text = "Total Duit: " + CurrencyManager.instance.GetTotalCurrency();
+            PindahScene();
         }
     }
 
-    public void BackToMenu()
+    public void PindahScene()
     {
-        SceneManager.LoadScene("MainMenuScene");
+        // Pindah ke scene yang sudah kamu tentukan di Inspector
+        if (!string.IsNullOrEmpty(namaSceneTujuan))
+        {
+            SceneManager.LoadScene(namaSceneTujuan);
+        }
+        else
+        {
+            Debug.LogWarning("Nama Scene Tujuan belum diisi di Inspector GameOverManager!");
+        }
     }
 }
