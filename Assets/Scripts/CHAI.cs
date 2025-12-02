@@ -81,7 +81,7 @@ public class CHAI : MonoBehaviour
 
                     rb.bodyType = RigidbodyType2D.Kinematic;
                     rb.linearVelocity = Vector2.zero;
-
+                    //comment
                     StartCoroutine(AttackPause(attackCooldown));
                 }
             }
