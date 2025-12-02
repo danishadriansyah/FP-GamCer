@@ -18,6 +18,7 @@ public class RangedAI : MonoBehaviour
     private Rigidbody2D rb;
     private Animator animator;
     private SpriteRenderer spriteRenderer; // Variabel baru
+    private Collider2D collider;
     private float fireTimer;
 
     void Start()
@@ -25,6 +26,7 @@ public class RangedAI : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>(); // Ambil komponen SpriteRenderer
+        collider = GetComponent<Collider2D>();
 
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
         if (playerObject != null)
@@ -76,15 +78,12 @@ public class RangedAI : MonoBehaviour
             rb.linearVelocity = Vector2.zero;
             rb.angularVelocity = 0f;
             // Disable the collider
-            Collider2D collider = GetComponent<Collider2D>();
-            if (collider != null)
-            {
-                collider.enabled = false;
-            }
+            collider.enabled = false;
         }
         else if (distanceToPlayer > stopDistance)
         {
             // --- MODE: MENGEJAR ---
+            collider.enabled = true;
             rb.bodyType = RigidbodyType2D.Dynamic; // Biar bisa gerak
             rb.linearVelocity = directionToPlayer * speed;
             animator.SetBool("IsRunning", true);
@@ -93,6 +92,7 @@ public class RangedAI : MonoBehaviour
         else
         {
             // --- MODE: BERHENTI & MENEMBAK ---
+            collider.enabled = false;
             rb.bodyType = RigidbodyType2D.Kinematic; // Biar GAK BISA kedorong musuh lain
             rb.linearVelocity = Vector2.zero;
             animator.SetBool("IsRunning", false);

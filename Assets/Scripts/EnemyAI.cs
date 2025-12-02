@@ -11,7 +11,8 @@ public class EnemyAI : MonoBehaviour
 
     private Transform player;
     private Animator animator;
-    private Rigidbody2D rb; 
+    private Rigidbody2D rb;
+    private Collider2D collider;
     private float lastAttackTime;
 
     private bool isAttacking = false;
@@ -26,6 +27,7 @@ public class EnemyAI : MonoBehaviour
 
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        collider = GetComponent<Collider2D>();
     }
 
     void FixedUpdate()
@@ -60,11 +62,7 @@ public class EnemyAI : MonoBehaviour
                 rb.angularVelocity = 0f;
 
                 // Disable the collider agar bisa dilewati
-                Collider2D collider = GetComponent<Collider2D>();
-                if (collider != null)
-                {
-                    collider.enabled = false;
-                }
+                collider.enabled = false;
             }
             // Jika enemy tidak sedang menyerang maka bergerak
             else if (!animator.GetBool("IsAttacking"))

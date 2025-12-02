@@ -14,6 +14,7 @@ public class VBAI : MonoBehaviour
     private Transform player;
     private Animator animator;
     private Rigidbody2D rb;
+    private Collider2D collider;
     private float lastAttackTime; // [BARU] Timer cooldown
 
     private bool isAttacking = false;
@@ -28,6 +29,7 @@ public class VBAI : MonoBehaviour
 
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        collider = GetComponent<Collider2D>();
     }
 
     void FixedUpdate()
@@ -57,8 +59,7 @@ public class VBAI : MonoBehaviour
             {
                 rb.linearVelocity = Vector2.zero;
                 rb.angularVelocity = 0f;
-                Collider2D collider = GetComponent<Collider2D>();
-                if (collider != null) collider.enabled = false;
+                collider.enabled = false;
             }
             // Logika saat Bergerak (Mengejar)
             else if (!animator.GetBool("IsAttacking"))
