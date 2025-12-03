@@ -5,7 +5,7 @@ public enum ItemType
 {
     HealthPotion,
     SpeedPotion,
-    DamagePotion
+    AttackPotion
 }
 
 [RequireComponent(typeof(Collider2D))]
@@ -89,7 +89,7 @@ public class ConsumableItem : MonoBehaviour
                 if (movement != null) movement.BoostSpeed(value, duration);
                 break;
 
-            case ItemType.DamagePotion:
+            case ItemType.AttackPotion:
                 AutoGun weapon = player.GetComponent<AutoGun>();
                 if (weapon != null) weapon.BoostDamage((int)value, duration);
                 break;

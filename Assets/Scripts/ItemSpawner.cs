@@ -4,16 +4,26 @@ public class ItemSpawner : MonoBehaviour
 {
     [Header("Pengaturan Spawn")]
     public string[] itemTags;
-    public float spawnInterval = 5f;
-    public float spawnRadius = 5f;
+
+    [Header("Waktu Spawn (Acak)")]
+    public float minSpawnInterval = 10f; // Paling cepat muncul
+    public float maxSpawnInterval = 15f; // Paling lambat muncul
+
+    [Header("Posisi Spawn (Acak)")]
+    public float minDistance = 3f;  // Jarak minimal dari pemain (biar gak spawn di muka)
+    public float maxDistance = 7f; // Jarak maksimal
 
     private float timer;
+    private float nextSpawnTime;
     private Transform player;
 
     void Start()
     {
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null) player = playerObj.transform;
+
+        // Set waktu spawn pertama
+        SetNextSpawnTime();
     }
 
     void Update()
@@ -21,24 +31,41 @@ public class ItemSpawner : MonoBehaviour
         if (player == null) return;
 
         timer += Time.deltaTime;
-        if (timer >= spawnInterval)
+
+        // Cek apakah sudah waktunya spawn
+        if (timer >= nextSpawnTime)
         {
             SpawnRandomItem();
-            timer = 0;
+            timer = 0; // Reset timer
+            SetNextSpawnTime(); // Acak waktu untuk spawn berikutnya
         }
+    }
+
+    void SetNextSpawnTime()
+    {
+        // Tentukan durasi acak untuk spawn berikutnya
+        nextSpawnTime = Random.Range(minSpawnInterval, maxSpawnInterval);
     }
 
     void SpawnRandomItem()
     {
-        // 1. Pilih item secara acak
+        if (itemTags.Length == 0) return;
+
+        // 1. Pilih item acak
         int randomIndex = Random.Range(0, itemTags.Length);
         string tagToSpawn = itemTags[randomIndex];
 
-        // 2. Tentukan posisi acak di sekitar pemain
-        Vector2 randomPos = Random.insideUnitCircle.normalized * spawnRadius;
-        Vector3 spawnPos = player.position + (Vector3)randomPos;
+        // 2. Tentukan POSISI yang benar-benar acak (Donat Shape)
+        // Arah acak (360 derajat)
+        Vector2 randomDirection = Random.insideUnitCircle.normalized;
+        // Jarak acak (antara min dan max)
+        float randomDistance = Random.Range(minDistance, maxDistance);
 
-        // 3. Spawn dari Object Pooler
+        // Gabungkan Arah * Jarak
+        Vector3 spawnOffset = randomDirection * randomDistance;
+        Vector3 spawnPos = player.position + spawnOffset;
+
+        // 3. Spawn dari Pool
         ObjectPooler.instance.SpawnFromPool(tagToSpawn, spawnPos, Quaternion.identity);
     }
 }

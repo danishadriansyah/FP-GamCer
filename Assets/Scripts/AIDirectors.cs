@@ -7,7 +7,6 @@ public class AIDirector : MonoBehaviour
     // Singleton agar mudah diakses oleh HUD
     public static AIDirector instance;
 
-    // --- PENGATURAN BARU: GAME LOOP (Timer & Boss) ---
     [Header("Pengaturan Game Loop")]
     public float gameDuration = 10f; // Durasi game dalam detik (misal 300 = 5 menit)
 

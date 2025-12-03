@@ -1,12 +1,12 @@
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(Collider2D))] // Pastikan ada collider
+[RequireComponent(typeof(Collider2D))]
 public class ExperienceOrb : MonoBehaviour
 {
     public int xpValue = 5;
-    public float moveSpeed = 5f; // Kecepatan orb ditarik
-    public float absorbDuration = 0.5f; // Durasi animasi terserap (detik)
+    public float moveSpeed = 9f; // Kecepatan orb ditarik
+    public float absorbDuration = 0.4f; // Durasi animasi terserap (detik)
 
     private Transform target; // Target (Player)
     private bool isAbsorbing = false;
@@ -49,7 +49,6 @@ public class ExperienceOrb : MonoBehaviour
         }
     }
 
-    // --- INI LOGIKA BARUNYA ---
     // Saat Orb menyentuh sesuatu
     void OnTriggerEnter2D(Collider2D other)
     {
