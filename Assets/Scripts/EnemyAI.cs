@@ -63,6 +63,7 @@ public class EnemyAI : MonoBehaviour
 
                 // Disable the collider agar bisa dilewati
                 collider.enabled = false;
+                isAttacking = false;
             }
             // Jika enemy tidak sedang menyerang maka bergerak
             else if (!animator.GetBool("IsAttacking"))

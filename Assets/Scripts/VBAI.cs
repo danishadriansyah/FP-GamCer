@@ -60,6 +60,7 @@ public class VBAI : MonoBehaviour
                 rb.linearVelocity = Vector2.zero;
                 rb.angularVelocity = 0f;
                 collider.enabled = false;
+                isAttacking = false;
             }
             // Logika saat Bergerak (Mengejar)
             else if (!animator.GetBool("IsAttacking"))

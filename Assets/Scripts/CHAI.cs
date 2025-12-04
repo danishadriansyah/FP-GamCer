@@ -63,6 +63,7 @@ public class CHAI : MonoBehaviour
 
                 // Disable the collider agar bisa dilewati
                 collider.enabled = false;
+                isAttacking = false;
             }
             else
             {
