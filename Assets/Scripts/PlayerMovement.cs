@@ -7,10 +7,14 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private Vector2 moveDirection;
     private float defaultSpeed;
+    private Animator animator;
+    private SpriteRenderer spriteRenderer;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         defaultSpeed = moveSpeed;
     }
 
@@ -18,6 +22,26 @@ public class PlayerMovement : MonoBehaviour
     {
         float moveX = Input.GetAxisRaw("Horizontal");
         float moveY = Input.GetAxisRaw("Vertical");
+        if (moveX != 0 || moveY != 0)
+        {
+            animator.SetBool("IsRunning", true);
+        } else
+        {
+            animator.SetBool("IsRunning", false);
+        }
+
+        // Handle Sprite Flipping
+        if (moveX > 0)
+        {
+            // Moving Right: specific code depends on your sprite's default direction
+            spriteRenderer.flipX = false;
+        }
+        else if (moveX < 0)
+        {
+            // Moving Left: Mirror the sprite
+            spriteRenderer.flipX = true;
+        }
+        // If moveX is 0, we do nothing, preserving the previous flip state.
         moveDirection = new Vector2(moveX, moveY).normalized;
     }
 

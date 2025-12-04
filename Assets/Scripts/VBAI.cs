@@ -96,8 +96,18 @@ public class VBAI : MonoBehaviour
     {
         if (rockHillPrefab != null)
         {
-            float yOffset = -0.5f;
-            Instantiate(rockHillPrefab, transform.position + new Vector3(0f, yOffset, 0f), Quaternion.identity);
+            // 1. Get the direction based on your scaling logic
+            // Returns 1 if scale is positive (Right), -1 if scale is negative (Left)
+            float facingDirection = Mathf.Sign(transform.localScale.x);
+
+            // 2. Apply the direction to the offset
+            float xOffset = 1f * facingDirection;
+            float yOffset = 0f;
+
+            // 3. Calculate final position
+            Vector3 spawnPosition = transform.position + new Vector3(xOffset, yOffset, 0f);
+
+            Instantiate(rockHillPrefab, spawnPosition, Quaternion.identity);
         }
     }
 

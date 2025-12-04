@@ -70,20 +70,7 @@ public class CHAI : MonoBehaviour
                 // Bergerak ke player
                 animator.SetBool("IsRunning", true);
                 rb.linearVelocity = direction * speed;
-
-                // Cek jarak supaya tidak mendorong player
-                float distance = Vector2.Distance(player.position, transform.position);
-                if (distance < 1.5f)
-                {
-                    isAttacking = true;
-                    animator.SetBool("IsRunning", false);
-
-                    rb.bodyType = RigidbodyType2D.Kinematic;
-                    rb.linearVelocity = Vector2.zero;
-                    StartCoroutine(AttackPause(attackCooldown));
-                }
             }
-                
         }
     }
 
@@ -114,6 +101,12 @@ public class CHAI : MonoBehaviour
                 // 5. Kurangi HP Player
                 if (playerHealth != null)
                 {
+                    isAttacking = true;
+                    animator.SetBool("IsRunning", false);
+
+                    rb.bodyType = RigidbodyType2D.Kinematic;
+                    rb.linearVelocity = Vector2.zero;
+                    StartCoroutine(AttackPause(attackCooldown));
                     playerHealth.TakeDamage(damage);
                     // Debug.Log("Musuh menyerang! HP Player berkurang."); // Hapus komen ini jika ingin cek di Console
 
