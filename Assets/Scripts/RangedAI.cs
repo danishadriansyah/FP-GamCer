@@ -118,14 +118,22 @@ public class RangedAI : MonoBehaviour
 
         if (projectileGO != null)
         {
-            // --- PERBAIKAN ARAH TEMBAK ---
-            // "Suntik" arah yang benar ke script peluru
+            // --- PERBAIKAN ROTASI SPRITE ---
+            // Menghitung sudut rotasi berdasarkan arah vektor (directionToPlayer)
+            // Mathf.Atan2 mengembalikan hasil dalam radian, kita ubah ke Degree
+            float angle = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg;
+
+            // Terapkan rotasi ke object peluru pada sumbu Z
+            projectileGO.transform.rotation = Quaternion.Euler(0, 0, angle);
+            // --- AKHIR PERBAIKAN ROTASI ---
+
+            // "Suntik" arah gerak ke script peluru
             EnemyProjectile projectileScript = projectileGO.GetComponent<EnemyProjectile>();
             if (projectileScript != null)
             {
                 projectileScript.SetDirection(directionToPlayer);
             }
-            // --- AKHIR PERBAIKAN ARAH TEMBAK ---
+
             animator.SetBool("IsAttacking", false);
         }
     }
