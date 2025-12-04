@@ -128,10 +128,10 @@ TextureImporter:
       name: Golem_Armor_ArmorBreak_0
       rect:
         serializedVersion: 2
-        x: 18
-        y: 81
-        width: 25
-        height: 27
+        x: 0
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -150,10 +150,10 @@ TextureImporter:
       name: Golem_Armor_ArmorBreak_1
       rect:
         serializedVersion: 2
-        x: 79
-        y: 80
-        width: 24
-        height: 26
+        x: 64
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -172,10 +172,10 @@ TextureImporter:
       name: Golem_Armor_ArmorBreak_2
       rect:
         serializedVersion: 2
-        x: 143
-        y: 79
-        width: 24
-        height: 24
+        x: 128
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -194,10 +194,10 @@ TextureImporter:
       name: Golem_Armor_ArmorBreak_3
       rect:
         serializedVersion: 2
-        x: 208
-        y: 80
-        width: 24
-        height: 24
+        x: 192
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -216,10 +216,10 @@ TextureImporter:
       name: Golem_Armor_ArmorBreak_4
       rect:
         serializedVersion: 2
-        x: 19
-        y: 17
-        width: 23
-        height: 24
+        x: 0
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -238,7 +238,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: d68f6c04f53e0c64e97056698a5afc55
     internalID: 0
     vertices: []
     indices: 

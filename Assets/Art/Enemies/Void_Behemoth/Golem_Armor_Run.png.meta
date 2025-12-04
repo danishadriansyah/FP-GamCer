@@ -125,10 +125,10 @@ TextureImporter:
       name: Golem_Armor_Run_0
       rect:
         serializedVersion: 2
-        x: 21
-        y: 18
-        width: 23
-        height: 26
+        x: 0
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -147,10 +147,10 @@ TextureImporter:
       name: Golem_Armor_Run_1
       rect:
         serializedVersion: 2
-        x: 85
-        y: 18
-        width: 25
-        height: 26
+        x: 64
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -169,10 +169,10 @@ TextureImporter:
       name: Golem_Armor_Run_2
       rect:
         serializedVersion: 2
-        x: 148
-        y: 17
-        width: 24
-        height: 26
+        x: 128
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -191,10 +191,10 @@ TextureImporter:
       name: Golem_Armor_Run_3
       rect:
         serializedVersion: 2
-        x: 212
-        y: 17
-        width: 22
-        height: 26
+        x: 192
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -213,7 +213,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: d2c647bb305a43a4197079f11264644b
     internalID: 0
     vertices: []
     indices: 
