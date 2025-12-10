@@ -5,8 +5,8 @@ using UnityEngine;
 public class ExperienceOrb : MonoBehaviour
 {
     public int xpValue = 5;
-    public float moveSpeed = 9f; // Kecepatan orb ditarik
-    public float absorbDuration = 0.4f; // Durasi animasi terserap (detik)
+    public float moveSpeed = 12f; // Kecepatan orb ditarik
+    public float absorbDuration = 0.3f; // Durasi animasi terserap (detik)
 
     private Collider2D target; // Target (Player)
     private bool isAbsorbing = false;
