@@ -39,12 +39,11 @@ public class HUDManager : MonoBehaviour
 
         if (AIDirector.instance != null)
         {
-            float timeLeft = AIDirector.instance.gameDuration - AIDirector.instance.gameTime;
-            if (timeLeft < 0) timeLeft = 0;
+            float timeElapsed = AIDirector.instance.gameTime;
 
-            // Format menit:detik
-            int minutes = Mathf.FloorToInt(timeLeft / 60F);
-            int seconds = Mathf.FloorToInt(timeLeft % 60F);
+            int minutes = Mathf.FloorToInt(timeElapsed / 60F);
+            int seconds = Mathf.FloorToInt(timeElapsed % 60F);
+
             timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
         }
     }
