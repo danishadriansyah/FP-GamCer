@@ -12,7 +12,7 @@ public class CHAI : MonoBehaviour
     private Transform player;
     private Animator animator;
     private Rigidbody2D rb;
-    private Collider2D collider;
+    private Collider2D collider2d;
     private float lastAttackTime;
 
     private bool isAttacking = false;
@@ -27,7 +27,7 @@ public class CHAI : MonoBehaviour
 
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        collider = GetComponent<Collider2D>();
+        collider2d = GetComponent<Collider2D>();
     }
 
     void FixedUpdate()
@@ -62,7 +62,7 @@ public class CHAI : MonoBehaviour
                 rb.angularVelocity = 0f;
 
                 // Disable the collider agar bisa dilewati
-                collider.enabled = false;
+                collider2d.enabled = false;
                 isAttacking = false;
             }
             else

@@ -20,7 +20,7 @@ public class ConsumableItem : MonoBehaviour
     public float moveSpeed = 8f;      // Kecepatan item terbang ke pemain
     public float absorbDuration = 0.3f; // Berapa lama animasi mengecil berlangsung
 
-    private Transform target;         // Target (Player)
+    private Collider2D target;         // Target (Player)
     private bool isAbsorbing = false; // Status apakah sedang diserap
     private Vector3 originalScale;    // Ukuran asli untuk reset pooling
     private Collider2D col;
@@ -41,7 +41,7 @@ public class ConsumableItem : MonoBehaviour
     }
 
     // Fungsi ini dipanggil oleh XPMagnet saat item masuk radius
-    public void SetTarget(Transform newTarget)
+    public void SetTarget(Collider2D newTarget)
     {
         if (isAbsorbing) return;
         target = newTarget;
@@ -52,7 +52,8 @@ public class ConsumableItem : MonoBehaviour
         // Jika sudah punya target (kena magnet), terbang ke arah pemain
         if (target != null && !isAbsorbing)
         {
-            transform.position = Vector2.MoveTowards(transform.position, target.position, moveSpeed * Time.deltaTime);
+            Vector3 colliderCenter = target.bounds.center;
+            transform.position = Vector2.MoveTowards(transform.position, colliderCenter, moveSpeed * Time.deltaTime);
         }
     }
 

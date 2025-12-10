@@ -8,7 +8,7 @@ public class ExperienceOrb : MonoBehaviour
     public float moveSpeed = 9f; // Kecepatan orb ditarik
     public float absorbDuration = 0.4f; // Durasi animasi terserap (detik)
 
-    private Transform target; // Target (Player)
+    private Collider2D target; // Target (Player)
     private bool isAbsorbing = false;
     private Vector3 originalScale;
     private Collider2D col;
@@ -34,7 +34,7 @@ public class ExperienceOrb : MonoBehaviour
     }
 
     // Fungsi yang dipanggil oleh XPMagnet
-    public void SetTarget(Transform newTarget)
+    public void SetTarget(Collider2D newTarget)
     {
         if (isAbsorbing) return; // Jangan ditarik kalo lagi diserap
         target = newTarget;
@@ -45,7 +45,8 @@ public class ExperienceOrb : MonoBehaviour
         // Jika target sudah ada (Player masuk jangkauan) & belum diserap
         if (target != null && !isAbsorbing)
         {
-            transform.position = Vector2.MoveTowards(transform.position, target.position, moveSpeed * Time.deltaTime);
+            Vector3 colliderCenter = target.bounds.center;
+            transform.position = Vector2.MoveTowards(transform.position, colliderCenter, moveSpeed * Time.deltaTime);
         }
     }
 
