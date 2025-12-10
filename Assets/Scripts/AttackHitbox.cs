@@ -1,44 +1,18 @@
 using UnityEngine;
 
-public class VBAttackProjectile : MonoBehaviour
+public class AttackHitbox : MonoBehaviour
 {
     public int damage = 10;
     private float lastAttackTime;
-    private Collider2D col;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        col = GetComponent<Collider2D>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    private void DestroyRock()
-    {
-        gameObject.SetActive(false);
-    }
-
-    private void EnableCollider()
-    {
-        col.enabled = true;
-    }
-
-    private void DisableCollider()
-    {
-        col.enabled = false;
-    }
-
-    void OnCollisionStay2D(Collision2D collision)
+    // --- [BAGIAN BARU: LOGIKA PEMBERIAN DAMAGE] ---
+    // Fungsi ini dipanggil Unity terus-menerus selama musuh menempel pada objek lain
+    void OnTriggerEnter2D(UnityEngine.Collider2D collision)
     {
         // 1. Pastikan yang disentuh adalah Player
         if (collision.gameObject.CompareTag("Player"))
         {
             // 3. Cek cooldown serangan (agar HP tidak langsung habis dalam sekejap)
-            if (Time.time >= lastAttackTime + 1f)
+            if (Time.time >= lastAttackTime + 0.12f)
             {
                 // 4. Ambil komponen HealthSystem dari Player
                 HealthSystem playerHealth = collision.gameObject.GetComponent<HealthSystem>();

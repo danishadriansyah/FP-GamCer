@@ -63,15 +63,31 @@ public class RangedAI : MonoBehaviour
 
         // --- PERBAIKAN ARAH HADAP (MANUAL FLIP) ---
         // Ini akan memaksa dia menghadap Player, baik saat lari ATAU diam
-        if (directionToPlayer.x < 0)
+        //if (directionToPlayer.x < 0)
+        //{
+        //    spriteRenderer.flipX = true; // Hadap kiri
+        //}
+        //else if (directionToPlayer.x > 0)
+        //{
+        //    spriteRenderer.flipX = false; // Hadap kanan
+        //}
+
+        // Check if the enemy is moving left
+        bool isMovingLeft = directionToPlayer.x < 0;
+
+        // Set the local scale of the sprite to mirror it
+        Vector3 localScale = transform.localScale;
+        // Flip only if needed
+        if ((isMovingLeft && localScale.x > 0) || (!isMovingLeft && localScale.x < 0))
         {
-            spriteRenderer.flipX = true; // Hadap kiri
-        }
-        else if (directionToPlayer.x > 0)
-        {
-            spriteRenderer.flipX = false; // Hadap kanan
+            localScale.x *= -1;
+            Vector3 firePoint_localScale = firePoint.localScale;
+            firePoint_localScale.x *= -1;
+            firePoint.transform.localScale = firePoint_localScale;
+            transform.localScale = localScale;
         }
         // --- AKHIR PERBAIKAN ARAH HADAP ---
+
         // Jika enemy mati maka tidak bisa disentuh
         if (animator.GetBool("IsDead"))
         {

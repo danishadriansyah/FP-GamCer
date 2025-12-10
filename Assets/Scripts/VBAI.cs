@@ -107,7 +107,7 @@ public class VBAI : MonoBehaviour
             // 3. Calculate final position
             Vector3 spawnPosition = transform.position + new Vector3(xOffset, yOffset, 0f);
 
-            Instantiate(rockHillPrefab, spawnPosition, Quaternion.identity);
+            ObjectPooler.instance.SpawnFromPool("VoidBehemoth_Attack", spawnPosition, Quaternion.identity);
         }
     }
 

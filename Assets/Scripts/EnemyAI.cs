@@ -7,7 +7,9 @@ public class EnemyAI : MonoBehaviour
     [Header("Status Musuh")]
     public float speed = 2f;
     public int damage = 10; 
-    public float attackCooldown = 0.5f; 
+    public float attackCooldown = 0.5f;
+    public GameObject attackHitbox;
+
 
     private Transform player;
     private Animator animator;
@@ -37,6 +39,16 @@ public class EnemyAI : MonoBehaviour
             rb.linearVelocity = Vector2.zero;
             return;
         }
+        else if (animator.GetBool("IsDead"))
+        {
+            isAttacking = false;
+            rb.linearVelocity = Vector2.zero; // Menghentikan gerak fisik
+            rb.angularVelocity = 0f;
+
+            // Disable the collider agar bisa dilewati
+            collider2d.enabled = false;
+            return;
+        }
 
         if (player != null)
         {
@@ -52,29 +64,23 @@ public class EnemyAI : MonoBehaviour
             if ((isMovingLeft && localScale.x > 0) || (!isMovingLeft && localScale.x < 0))
             {
                 localScale.x *= -1;
+                // attackHitbox.transform.localPosition = new Vector3(-1f, 0, 0);
                 transform.localScale = localScale;
             }
-
-            // Jika enemy mati maka tidak bisa disentuh
-            if (animator.GetBool("IsDead"))
-            {
-                rb.linearVelocity = Vector2.zero; // Menghentikan gerak fisik
-                rb.angularVelocity = 0f;
-
-                // Disable the collider agar bisa dilewati
-                collider2d.enabled = false;
-                isAttacking = false;
-            }
+            
             // Jika enemy tidak sedang menyerang maka bergerak
-            else if (!animator.GetBool("IsAttacking"))
+            if (!animator.GetBool("IsAttacking"))
             {
                 animator.SetBool("IsRunning", true);
                 rb.linearVelocity = direction * speed;
             }
 
             // Cek jarak untuk memicu animasi serangan
-            float distance = Vector2.Distance(player.position, transform.position);
-            if (!isAttacking && distance < 1.5f)
+            //float distance = Vector2.Distance(player.position, transform.position);
+            // Check distance
+            float xDistance = Mathf.Abs(player.position.x - transform.position.x);
+            float yDistance = Mathf.Abs(player.position.y - transform.position.y);
+            if (!isAttacking && xDistance < 1.25f && yDistance < 1.0f)
             {
                 isAttacking = true;
                 animator.SetBool("IsRunning", false);
@@ -84,6 +90,16 @@ public class EnemyAI : MonoBehaviour
                 rb.linearVelocity = Vector2.zero;
             }
         }
+    }
+
+    public void EnableHitbox()
+    {
+        attackHitbox.SetActive(true);
+    }
+
+    public void DisableHitbox()
+    {
+        attackHitbox.SetActive(false);
     }
 
     void EnableMovement()

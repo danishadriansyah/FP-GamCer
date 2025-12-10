@@ -7595,7 +7595,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &341469992
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11910,6 +11910,9 @@ MonoBehaviour:
   - tag: Item_Attack
     prefab: {fileID: 5134792568843507725, guid: 1c30178e34b33a74481e74f35bf24aed, type: 3}
     size: 50
+  - tag: VoidBehemoth_Attack
+    prefab: {fileID: 8451513414252156014, guid: df782e95e912c23449ebbdc737002798, type: 3}
+    size: 10
 --- !u!4 &621750530
 Transform:
   m_ObjectHideFlags: 0
@@ -38867,11 +38870,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4646054428906193600, guid: 7252e58613d233741b7ebdf8889e767a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.78
+      value: -5.22
       objectReference: {fileID: 0}
     - target: {fileID: 4646054428906193600, guid: 7252e58613d233741b7ebdf8889e767a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.53
+      value: 5.57
       objectReference: {fileID: 0}
     - target: {fileID: 4646054428906193600, guid: 7252e58613d233741b7ebdf8889e767a, type: 3}
       propertyPath: m_LocalPosition.z
