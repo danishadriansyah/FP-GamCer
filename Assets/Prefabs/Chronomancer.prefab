@@ -98,6 +98,7 @@ GameObject:
   - component: {fileID: 7442288518682790962}
   - component: {fileID: 6698018229499222088}
   - component: {fileID: -8138930194387464087}
+  - component: {fileID: 8755420419632434403}
   m_Layer: 0
   m_Name: Chronomancer
   m_TagString: Player
@@ -237,7 +238,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.056848586, y: -0.95115626}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -247,7 +248,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 2.56, y: 2.56}
+  m_Size: {x: 0.80906093, y: 0.6576874}
   m_EdgeRadius: 0
 --- !u!114 &4975943341531277313
 MonoBehaviour:
@@ -261,7 +262,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b89036b971bcb4e49b2ff31a4d711ecd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 2
+  moveSpeed: 5
 --- !u!114 &6977655238276894590
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -331,3 +332,17 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8755420419632434403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4483335928792507156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c42be7091e83b9f46be89c34b28a4bba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashMaterial: {fileID: 0}
+  flashDuration: 0.1
