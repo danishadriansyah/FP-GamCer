@@ -77,7 +77,7 @@ public class AIDirector : MonoBehaviour
         HealthSystem.OnPlayerDamaged -= HandlePlayerDamaged;
         HealthSystem.OnEnemyKilled -= HandleEnemyKilled;
     }
-    void HandlePlayerDamaged(int damageAmount)
+    void HandlePlayerDamaged(float damageAmount)
     {
         currentStress += damageStressAmount;
     }

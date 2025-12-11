@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a42f5ce2d45611e4989500472fa64b44, type: 3}
-  m_Name: Upgrade_HP
+  m_Script: {fileID: 11500000, guid: 839d359668c21ae4b9f1b794d4c35106, type: 3}
+  m_Name: Upgrade_XPGained
   m_EditorClassIdentifier: 
-  type: 1
-  upgradeName: HP Increase
-  description: Menambah HP 10%
+  fullCardImage: {fileID: 3382101526354518444, guid: fbd57bc460e15e04dbee1ca35e43913c, type: 3}
+  type: 5
+  value: 1.2

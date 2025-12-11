@@ -1,6 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,19 +9,18 @@ public class GameManager : MonoBehaviour
 
     [Header("Upgrade Settings")]
     public List<UpgradeData> upgradePool;
-    public Button[] upgradeButtons;
-    public TextMeshProUGUI[] upgradeButtonTitles;
-    public TextMeshProUGUI[] upgradeButtonDescs;
+    public UpgradeButton[] upgradeButtons;
 
-    private List<UpgradeData> availableUpgrades;
-
+    //private List<UpgradeData> availableUpgrades;
     
-    private GameObject player; 
+    private GameObject player;
+    private GameObject xp_orb;
 
     void Awake()
     {
         if (instance == null) instance = this;
         player = GameObject.FindGameObjectWithTag("Player");
+        xp_orb = GameObject.FindGameObjectWithTag("ExperienceOrb");
     }
 
     public void ShowLevelUpScreen()
@@ -31,26 +28,41 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0f;
         levelUpScreen.SetActive(true);
 
-        availableUpgrades = upgradePool.OrderBy(x => Random.value).ToList();
+        // 1. Shuffle the list of upgrades randomly
+        List<UpgradeData> availableUpgrades = upgradePool.OrderBy(x => Random.value).ToList();
 
+        // 2. Loop through the buttons and assign the data
         for (int i = 0; i < upgradeButtons.Length; i++)
         {
             if (i < availableUpgrades.Count)
             {
-                upgradeButtonTitles[i].text = availableUpgrades[i].upgradeName;
-                upgradeButtonDescs[i].text = availableUpgrades[i].description;
-
-                int upgradeIndex = i;
-                upgradeButtons[i].onClick.RemoveAllListeners();
-                upgradeButtons[i].onClick.AddListener(() => ApplyUpgrade(upgradeIndex));
+                upgradeButtons[i].gameObject.SetActive(true);
+                // This calls the method on the LevelUpButton script to swap the image
+                upgradeButtons[i].SetUpgrade(availableUpgrades[i]);
+            }
+            else
+            {
+                // Hide button if we run out of upgrades
+                upgradeButtons[i].gameObject.SetActive(false);
             }
         }
+        //availableUpgrades = upgradePool.OrderBy(x => Random.value).ToList();
+
+        //for (int i = 0; i < upgradeButtons.Length; i++)
+        //{
+        //    if (i < availableUpgrades.Count)
+        //    {
+        //        int upgradeIndex = i;
+        //        upgradeButtons[i].onClick.RemoveAllListeners();
+        //        upgradeButtons[i].onClick.AddListener(() => ApplyUpgrade(upgradeIndex));
+        //    }
+        //}
     }
 
-    public void ApplyUpgrade(int upgradeIndex)
+    public void ApplyUpgrade(UpgradeData chosenUpgrade)
     {
-        UpgradeData chosenUpgrade = availableUpgrades[upgradeIndex];
-        Debug.Log("Upgrade dipilih: " + chosenUpgrade.upgradeName);
+        //UpgradeData chosenUpgrade = availableUpgrades[upgradeIndex];
+        Debug.Log("Upgrade dipilih: " + chosenUpgrade.type);
 
         if (player == null)
         {
@@ -63,23 +75,31 @@ public class GameManager : MonoBehaviour
         switch (chosenUpgrade.type)
         {
             case UpgradeType.WeaponSpeed:
-                player.GetComponent<AutoGun>().fireRate *= 0.85f;
+                player.GetComponent<AutoGun>().fireRate *= chosenUpgrade.value;
                 break;
             case UpgradeType.WeaponDamage:
-                player.GetComponent<AutoGun>().projectileDamage += 1;
+                player.GetComponent<AutoGun>().projectileDamage += (int)chosenUpgrade.value;
                 break;
             case UpgradeType.PlayerSpeed:
-                player.GetComponent<PlayerMovement>().moveSpeed *= 1.1f;
+                player.GetComponent<PlayerMovement>().moveSpeed *= chosenUpgrade.value;
                 break;
             case UpgradeType.HP:
                 HealthSystem playerHealth = player.GetComponent<HealthSystem>();
                 if (playerHealth != null)
                 {
-                    playerHealth.maxHealth += 10;
-                    playerHealth.Heal(10);
+                    float healValue = playerHealth.maxHealth * chosenUpgrade.value - playerHealth.maxHealth;
+                    playerHealth.maxHealth *= chosenUpgrade.value;
+                    playerHealth.Heal(healValue);
                 }
                 break;
+            case UpgradeType.XP_Gained:
+                xp_orb.GetComponent<ExperienceOrb>().xpValue *= chosenUpgrade.value;
+                break;
+            case UpgradeType.WeaponProjectileCount:
+                player.GetComponent<AutoGun>().projectileCount += (int)chosenUpgrade.value;
+                break;
         }
+        Debug.Log("Upgrade Sukses!");
 
         HideLevelUpScreen();
     }

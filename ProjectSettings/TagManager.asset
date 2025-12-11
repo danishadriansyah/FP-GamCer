@@ -10,6 +10,7 @@ TagManager:
   - EnemyProjectile
   - Consumable
   - Boss
+  - GameManager
   layers:
   - Default
   - TransparentFX

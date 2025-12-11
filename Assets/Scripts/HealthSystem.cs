@@ -6,14 +6,14 @@ public class HealthSystem : MonoBehaviour
 {
     [Header("Data")]
     public GameObject xpOrbPrefab;
-    public int maxHealth;
-    public int currentHealth;
+    public float maxHealth;
+    public float currentHealth;
     private Animator animator;
 
     [Header("Status")]
     public bool isPlayer = false; 
 
-    public static event Action<int> OnPlayerDamaged;
+    public static event Action<float> OnPlayerDamaged;
     public static event Action OnEnemyKilled;
 
     void Start()
@@ -26,7 +26,7 @@ public class HealthSystem : MonoBehaviour
         currentHealth = maxHealth;
     }
 
-    public void Heal(int amount)
+    public void Heal(float amount)
     {
         currentHealth += amount;
         if (currentHealth > maxHealth)
