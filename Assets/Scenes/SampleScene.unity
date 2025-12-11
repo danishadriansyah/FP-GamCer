@@ -391,21 +391,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelUpScreen: {fileID: 341469991}
   upgradePool:
-  - {fileID: 11400000, guid: 5cd8b586aae5392498db2c5d3f72a2fe, type: 2}
-  - {fileID: 11400000, guid: 880f5eef6e6e7f44bb47c8197f4ce544, type: 2}
-  - {fileID: 11400000, guid: aaf672ac77b3e4a47b668f2c87e1dfc5, type: 2}
+  - {fileID: 11400000, guid: 9535fb50bded2e947993002fa5ce24d8, type: 2}
+  - {fileID: 11400000, guid: 02c3da9904ccf51428534c64f6386e5c, type: 2}
+  - {fileID: 11400000, guid: 400361e9ed314fb49a0a2b0826d81b35, type: 2}
+  - {fileID: 11400000, guid: 3ab143a4381aec241ab2286730ad3b6a, type: 2}
+  - {fileID: 11400000, guid: 00d9516c0fd66db4cbf188590f018add, type: 2}
+  - {fileID: 11400000, guid: a2278c8f1eb2cb14db09ab33342d317b, type: 2}
   upgradeButtons:
-  - {fileID: 961911804}
-  - {fileID: 1930700225}
-  - {fileID: 174420954}
-  upgradeButtonTitles:
-  - {fileID: 412074114}
-  - {fileID: 1393546676}
-  - {fileID: 506375112}
-  upgradeButtonDescs:
-  - {fileID: 1520978658}
-  - {fileID: 1401676246}
-  - {fileID: 876981417}
+  - {fileID: 961911807}
+  - {fileID: 1930700228}
+  - {fileID: 174420957}
 --- !u!4 &81225404
 Transform:
   m_ObjectHideFlags: 0
@@ -438,6 +433,7 @@ GameObject:
   - component: {fileID: 174420956}
   - component: {fileID: 174420955}
   - component: {fileID: 174420954}
+  - component: {fileID: 174420957}
   m_Layer: 5
   m_Name: Button 3
   m_TagString: Untagged
@@ -509,19 +505,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 174420955}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 81225403}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: HideLevelUpScreen
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &174420955
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -560,6 +544,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 174420952}
   m_CullTransparentMesh: 1
+--- !u!114 &174420957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 174420952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a592a07b21a774b4a8b0e47071fede8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &180789745
 GameObject:
   m_ObjectHideFlags: 0
@@ -20758,6 +20754,7 @@ GameObject:
   - component: {fileID: 961911806}
   - component: {fileID: 961911805}
   - component: {fileID: 961911804}
+  - component: {fileID: 961911807}
   m_Layer: 5
   m_Name: Button 1
   m_TagString: Untagged
@@ -20829,19 +20826,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 961911805}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 81225403}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: HideLevelUpScreen
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &961911805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20880,6 +20865,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 961911802}
   m_CullTransparentMesh: 1
+--- !u!114 &961911807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 961911802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a592a07b21a774b4a8b0e47071fede8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &968291868
 GameObject:
   m_ObjectHideFlags: 0
@@ -34459,6 +34456,7 @@ GameObject:
   - component: {fileID: 1930700227}
   - component: {fileID: 1930700226}
   - component: {fileID: 1930700225}
+  - component: {fileID: 1930700228}
   m_Layer: 5
   m_Name: Button 2
   m_TagString: Untagged
@@ -34530,19 +34528,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1930700226}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 81225403}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: HideLevelUpScreen
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1930700226
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34581,6 +34567,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1930700223}
   m_CullTransparentMesh: 1
+--- !u!114 &1930700228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1930700223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a592a07b21a774b4a8b0e47071fede8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1974210280
 GameObject:
   m_ObjectHideFlags: 0
