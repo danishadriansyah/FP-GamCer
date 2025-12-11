@@ -7,6 +7,7 @@ public class AutoGun : MonoBehaviour
     public GameObject projectilePrefab;
     public float fireRate;
     public int projectileDamage = 1;
+    public int projectileCount = 1;
 
     private float nextFireTime;
     private Camera mainCamera;
@@ -25,7 +26,7 @@ public class AutoGun : MonoBehaviour
         if (Time.time > nextFireTime)
         {
             FireAtVisibleEnemies();
-            nextFireTime = Time.time + fireRate;
+            nextFireTime = Time.time + (1 / fireRate);
         }
     }
 
@@ -40,11 +41,21 @@ public class AutoGun : MonoBehaviour
                 ProjectileBehaviour projectile = projectileObj.GetComponent<ProjectileBehaviour>();
                 if (projectile != null)
                 {
-                    projectile.SetTarget(enemy.transform);
-                    projectile.SetDamage(projectileDamage);
+                    StartCoroutine(ShootBullets(projectile, enemy));
                 }
             }
         }
+    }
+    IEnumerator ShootBullets(ProjectileBehaviour projectile, GameObject enemy)
+    {
+        for (int i = 0; i < projectileCount; i++)
+        {
+            projectile.SetTarget(enemy.transform);
+            projectile.SetDamage(projectileDamage);
+            yield return new WaitForSeconds(0.1f);
+            Debug.Log("Bullets fired: " + i);
+        }
+        Debug.Log("Expected projectile count: " + projectileCount);
     }
 
     private bool IsObjectVisible(GameObject obj)

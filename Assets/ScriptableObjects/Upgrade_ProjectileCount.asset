@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 839d359668c21ae4b9f1b794d4c35106, type: 3}
-  m_Name: Upgrade_MovementSpeed
+  m_Name: Upgrade_ProjectileCount
   m_EditorClassIdentifier: 
-  fullCardImage: {fileID: -5447403752590868552, guid: f5e192ab812772a45b1ae8f384c696f6, type: 3}
-  type: 2
-  value: 1.1
+  fullCardImage: {fileID: 355559869370167616, guid: 4506da09bf2ab574d9cd2957065b9e4c, type: 3}
+  type: 4
+  value: 1

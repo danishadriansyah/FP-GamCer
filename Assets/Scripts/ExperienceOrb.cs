@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class ExperienceOrb : MonoBehaviour
 {
-    public int xpValue = 5;
+    public float xpValue = 5;
     public float moveSpeed = 12f; // Kecepatan orb ditarik
     public float absorbDuration = 0.3f; // Durasi animasi terserap (detik)
 

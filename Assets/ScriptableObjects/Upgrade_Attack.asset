@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a42f5ce2d45611e4989500472fa64b44, type: 3}
-  m_Name: Upgrade_WeaponSpeed
+  m_Script: {fileID: 11500000, guid: 839d359668c21ae4b9f1b794d4c35106, type: 3}
+  m_Name: Upgrade_Attack
   m_EditorClassIdentifier: 
-  type: 0
-  upgradeName: Attack Speed
-  description: Menambah Attack Speed 15%
+  fullCardImage: {fileID: -1093715740636463925, guid: e6678f01f31c5cb46b92333913040869, type: 3}
+  type: 1
+  value: 1

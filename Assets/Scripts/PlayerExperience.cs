@@ -3,8 +3,8 @@ using UnityEngine;
 public class PlayerExperience : MonoBehaviour
 {
     public int currentLevel = 1;
-    public int currentXP = 0;
-    public int xpToNextLevel = 100;
+    public float currentXP = 0;
+    public float xpToNextLevel = 100;
 
     [Header("Pengaturan Kenaikan Level")]
     public float xpMultiplier = 1.5f;
@@ -18,7 +18,7 @@ public class PlayerExperience : MonoBehaviour
         healthSystem = GetComponent<HealthSystem>();
     }
 
-    public void AddXP(int xp)
+    public void AddXP(float xp)
     {
         currentXP += xp;
         // Debug.Log("Dapat XP: " + xp + ". Total XP sekarang: " + currentXP + "/" + xpToNextLevel);
