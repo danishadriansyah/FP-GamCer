@@ -11,7 +11,9 @@ public class HealthSystem : MonoBehaviour
     private Animator animator;
 
     [Header("Status")]
-    public bool isPlayer = false; 
+    public bool isPlayer = false;
+
+    private bool isDead = false;
 
     public static event Action<float> OnPlayerDamaged;
     public static event Action OnEnemyKilled;
@@ -24,6 +26,11 @@ public class HealthSystem : MonoBehaviour
             isPlayer = true;
         }
         currentHealth = maxHealth;
+    }
+
+    public bool GetStatus()
+    {
+        return isDead;
     }
 
     public void Heal(float amount)
@@ -60,6 +67,7 @@ public class HealthSystem : MonoBehaviour
         {
             // Buat supaya parameter animator IsDead menjadi true
             animator.SetBool("IsDead", true);
+            isDead = true;
             //OnEnemyKilled?.Invoke();
 
             ////CurrencyManager.instance.AddSessionCurrency(1);
@@ -105,5 +113,6 @@ public class HealthSystem : MonoBehaviour
     {
         // Reset kesehatan setiap kali "hidup" kembali
         currentHealth = maxHealth;
+        isDead = false;
     }
 }

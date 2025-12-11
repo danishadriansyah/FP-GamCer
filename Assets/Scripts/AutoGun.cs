@@ -47,24 +47,25 @@ public class AutoGun : MonoBehaviour
         for (int i = 0; i < projectileCount; i++)
         {
             // Safety check: Don't keep shooting if the enemy is already dead/null
-            if (enemy == null) break;
-
-            // 1. Spawn a NEW bullet from the pool
-            GameObject projectileObj = ObjectPooler.instance.SpawnFromPool("Projectile", transform.position, Quaternion.identity);
-
-            // 2. Configure the bullet
-            ProjectileBehaviour projectile = projectileObj.GetComponent<ProjectileBehaviour>();
-            if (projectile != null)
+            if (!enemy.GetComponent<HealthSystem>().GetStatus())
             {
-                projectile.SetTarget(enemy.transform);
-                projectile.SetDamage(projectileDamage);
-            }
+                // 1. Spawn a NEW bullet from the pool
+                GameObject projectileObj = ObjectPooler.instance.SpawnFromPool("Projectile", transform.position, Quaternion.identity);
 
-            // 3. Wait slightly before firing the next bullet in the burst
-            // Only wait if we actually have more bullets to fire
-            if (i < projectileCount - 1)
-            {
-                yield return new WaitForSeconds(0.2f);
+                // 2. Configure the bullet
+                ProjectileBehaviour projectile = projectileObj.GetComponent<ProjectileBehaviour>();
+                if (projectile != null)
+                {
+                    projectile.SetTarget(enemy.transform);
+                    projectile.SetDamage(projectileDamage);
+                }
+
+                // 3. Wait slightly before firing the next bullet in the burst
+                // Only wait if we actually have more bullets to fire
+                if (i < projectileCount - 1)
+                {
+                    yield return new WaitForSeconds(0.2f);
+                }
             }
         }
     }
